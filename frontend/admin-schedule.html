@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MECC - Manage Lecture Schedule</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: #f1f5f9;
+
+            color: #1e293b;
+
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        .navbar {
+
+            height: 70px;
+
+            background: #111827;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+        }
+
+
+        .logo span {
+
+            color: #60a5fa;
+
+        }
+
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .admin-name {
+
+            color: #e2e8f0;
+
+        }
+
+
+        .back-btn {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 9px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .back-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        .logout-btn {
+
+            border: none;
+
+            background: #dc2626;
+
+            color: white;
+
+            padding: 9px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .logout-btn:hover {
+
+            background: #b91c1c;
+
+        }
+
+
+        /* =========================================
+           CONTAINER
+        ========================================= */
+
+        .container {
+
+            max-width: 1300px;
+
+            margin: 35px auto;
+
+            padding: 0 20px;
+
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .page-header {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .page-header h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .page-header p {
+
+            color: #64748b;
+
+        }
+
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .top-bar {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.07);
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .search-box {
+
+            flex: 1;
+
+        }
+
+
+        .search-box input {
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+        }
+
+
+        .add-btn {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+
+        .add-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        /* =========================================
+           TABLE CARD
+        ========================================= */
+
+        .table-card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.07);
+
+        }
+
+
+        .table-container {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            min-width: 1000px;
+
+            border-collapse:
+                collapse;
+
+        }
+
+
+        th {
+
+            background: #f8fafc;
+
+            color: #475569;
+
+            text-align: left;
+
+            padding: 14px;
+
+        }
+
+
+        td {
+
+            padding: 14px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+        }
+
+
+        tr:hover {
+
+            background: #f8fafc;
+
+        }
+
+
+        .course-badge {
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            padding:
+                5px 9px;
+
+            border-radius: 14px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+        }
+
+
+        .date-badge {
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            padding:
+                5px 8px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+        }
+
+
+        .action-buttons {
+
+            display: flex;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .edit-btn {
+
+            border: none;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            padding:
+                7px 12px;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .delete-btn {
+
+            border: none;
+
+            background: #fee2e2;
+
+            color: #dc2626;
+
+            padding:
+                7px 12px;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .edit-btn:hover {
+
+            background: #bfdbfe;
+
+        }
+
+
+        .delete-btn:hover {
+
+            background: #fecaca;
+
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            padding: 40px;
+
+            color: #64748b;
+
+        }
+
+
+        /* =========================================
+           MODAL
+        ========================================= */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            background:
+                rgba(0,0,0,.55);
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding: 20px;
+
+        }
+
+
+        .modal-box {
+
+            width: 100%;
+
+            max-width: 650px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 28px;
+
+        }
+
+
+        .modal-header {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .modal-header h2 {
+
+            font-size: 23px;
+
+        }
+
+
+        .close-btn {
+
+            border: none;
+
+            background: none;
+
+            font-size: 28px;
+
+            color: #475569;
+
+            cursor: pointer;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        .form-group input,
+
+        .form-group select,
+
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 11px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+        }
+
+
+        .form-group textarea {
+
+            min-height: 90px;
+
+            resize: vertical;
+
+        }
+
+
+        .time-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+        .submit-btn {
+
+            width: 100%;
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+
+        }
+
+
+        .submit-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        @media(max-width: 750px) {
+
+            .top-bar {
+
+                flex-direction: column;
+
+                align-items:
+                    stretch;
+
+            }
+
+
+            .time-row {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .navbar {
+
+                padding: 0 15px;
+
+            }
+
+
+            .admin-name {
+
+                display: none;
+
+            }
+
+
+            .container {
+
+                padding:
+                    0 15px;
+
+                margin-top: 25px;
+
+            }
+
+
+            .page-header h1 {
+
+                font-size: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================= -->
+
+    <nav class="navbar">
+
+
+        <div class="logo">
+
+            MECC<span>.</span>
+
+        </div>
+
+
+        <div class="nav-right">
+
+
+            <span
+                id="adminName"
+                class="admin-name">
+
+                Admin
+
+            </span>
+
+
+            <button
+                class="back-btn"
+                onclick="goBack()">
+
+                ← Dashboard
+
+            </button>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                Logout
+
+            </button>
+
+
+        </div>
+
+
+    </nav>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="container">
+
+
+        <section class="page-header">
+
+
+            <h1>
+
+                Lecture Schedule Management
+
+            </h1>
+
+
+            <p>
+
+                Add, edit and delete lectures
+                for MECC students.
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             SEARCH + ADD
+        ===================================== -->
+
+        <section class="top-bar">
+
+
+            <div class="search-box">
+
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by course, subject, teacher or room..."
+                    oninput="searchSchedule()"
+                >
+
+
+            </div>
+
+
+            <button
+                class="add-btn"
+                onclick="openAddModal()">
+
+                + Add Lecture
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             TABLE
+        ===================================== -->
+
+        <section class="table-card">
+
+
+            <div class="table-container">
+
+
+                <table>
+
+
+                    <thead>
+
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Course</th>
+
+                            <th>Subject</th>
+
+                            <th>Teacher</th>
+
+                            <th>Date</th>
+
+                            <th>Time</th>
+
+                            <th>Room</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+
+                    </thead>
+
+
+                    <tbody
+                        id="scheduleTable">
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         ADD / EDIT MODAL
+    ========================================= -->
+
+    <div
+        class="modal"
+        id="scheduleModal">
+
+
+        <div class="modal-box">
+
+
+            <div class="modal-header">
+
+
+                <h2 id="modalTitle">
+
+                    Add Lecture
+
+                </h2>
+
+
+                <button
+                    class="close-btn"
+                    onclick="closeModal()">
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+
+            <form
+                id="scheduleForm"
+                onsubmit="saveLecture(event)"
+            >
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Course
+
+                    </label>
+
+
+                    <select
+                        id="course"
+                        required>
+
+                        <option value="">
+
+                            Select Course
+
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Subject
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="subject"
+                        placeholder="Enter subject"
+                        required
+                    >
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Teacher Name
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="teacherName"
+                        placeholder="Enter teacher name"
+                        required
+                    >
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Lecture Date
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="lectureDate"
+                        required
+                    >
+
+
+                </div>
+
+
+
+                <div class="time-row">
+
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            Start Time
+
+                        </label>
+
+
+                        <input
+                            type="time"
+                            id="startTime"
+                            required
+                        >
+
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            End Time
+
+                        </label>
+
+
+                        <input
+                            type="time"
+                            id="endTime"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Room
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="room"
+                        placeholder="Example: Room 101"
+                    >
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+
+                    <label>
+
+                        Description
+
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        placeholder="Enter lecture details..."
+                    ></textarea>
+
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitButton">
+
+                    Add Lecture
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        // =========================================
+        // API
+        // =========================================
+
+        const API_URL =
+            "http://localhost:3000";
+
+
+        let allSchedule = [];
+
+        let editingLectureId = null;
+
+
+
+        // =========================================
+        // ADMIN LOGIN CHECK
+        // =========================================
+
+        const savedAdmin =
+            localStorage.getItem("admin");
+
+
+        if (!savedAdmin) {
+
+            window.location.href =
+                "admin-login.html";
+
+        } else {
+
+            try {
+
+                const admin =
+                    JSON.parse(
+                        savedAdmin
+                    );
+
+
+                document.getElementById(
+                    "adminName"
+                ).textContent =
+                    admin.full_name ||
+                    "Admin";
+
+            } catch(error) {
+
+                localStorage.removeItem(
+                    "admin"
+                );
+
+                window.location.href =
+                    "admin-login.html";
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // LOAD COURSES
+        // =========================================
+
+        async function loadCourses() {
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        API_URL +
+                        "/courses"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load courses"
+                    );
+
+                }
+
+
+                const select =
+                    document.getElementById(
+                        "course"
+                    );
+
+
+                const courses =
+                    data.courses || [];
+
+
+                select.innerHTML = `
+
+                    <option value="">
+
+                        Select Course
+
+                    </option>
+
+                `;
+
+
+                courses.forEach(
+                    function(course) {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value =
+                            course.course_name;
+
+
+                        option.textContent =
+                            course.course_name;
+
+
+                        select.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+
+            } catch(error) {
+
+
+                console.error(
+                    "Course loading error:",
+                    error
+                );
+
+
+                const select =
+                    document.getElementById(
+                        "course"
+                    );
+
+
+                select.innerHTML = `
+
+                    <option value="">
+
+                        Unable to load courses
+
+                    </option>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // LOAD ALL SCHEDULE
+        // =========================================
+
+        async function loadSchedule() {
+
+
+            const table =
+                document.getElementById(
+                    "scheduleTable"
+                );
+
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="empty">
+
+                        Loading lecture schedule...
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        API_URL +
+                        "/admin/schedule"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load schedule"
+                    );
+
+                }
+
+
+                allSchedule =
+                    data.schedule || [];
+
+
+                displaySchedule(
+                    allSchedule
+                );
+
+
+            } catch(error) {
+
+
+                console.error(
+                    "Schedule loading error:",
+                    error
+                );
+
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="empty">
+
+                            Unable to load schedule.
+
+                            <br><br>
+
+                            ${escapeHtml(
+                                error.message
+                            )}
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // DISPLAY SCHEDULE
+        // =========================================
+
+        function displaySchedule(
+            schedule
+        ) {
+
+
+            const table =
+                document.getElementById(
+                    "scheduleTable"
+                );
+
+
+            if (
+                schedule.length === 0
+            ) {
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="empty">
+
+                            No lectures found.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+
+                return;
+
+            }
+
+
+
+            table.innerHTML =
+
+                schedule.map(
+                    function(lecture) {
+
+
+                        return `
+
+                            <tr>
+
+
+                                <td>
+
+                                    ${lecture.id}
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        class="course-badge">
+
+                                        ${escapeHtml(
+                                            lecture.course
+                                        )}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+
+                                        ${escapeHtml(
+                                            lecture.subject
+                                        )}
+
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    ${escapeHtml(
+                                        lecture.teacher_name
+                                    )}
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        class="date-badge">
+
+                                        ${formatDate(
+                                            lecture.lecture_date
+                                        )}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    ${formatTime(
+                                        lecture.start_time
+                                    )}
+
+                                    -
+
+                                    ${formatTime(
+                                        lecture.end_time
+                                    )}
+
+                                </td>
+
+
+                                <td>
+
+                                    ${escapeHtml(
+                                        lecture.room ||
+                                        "-"
+                                    )}
+
+                                </td>
+
+
+                                <td>
+
+
+                                    <div
+                                        class="action-buttons">
+
+
+                                        <button
+                                            class="edit-btn"
+                                            onclick="editLecture(${lecture.id})">
+
+                                            Edit
+
+                                        </button>
+
+
+                                        <button
+                                            class="delete-btn"
+                                            onclick="deleteLecture(${lecture.id})">
+
+                                            Delete
+
+                                        </button>
+
+
+                                    </div>
+
+
+                                </td>
+
+
+                            </tr>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+        }
+
+
+
+        // =========================================
+        // SEARCH
+        // =========================================
+
+        function searchSchedule() {
+
+
+            const search =
+                document.getElementById(
+                    "searchInput"
+                )
+                .value
+                .toLowerCase()
+                .trim();
+
+
+            const filtered =
+                allSchedule.filter(
+                    function(lecture) {
+
+
+                        return (
+
+                            String(
+                                lecture.id
+                            )
+                            .includes(search)
+
+
+                            ||
+
+                            String(
+                                lecture.course ||
+                                ""
+                            )
+                            .toLowerCase()
+                            .includes(search)
+
+
+                            ||
+
+                            String(
+                                lecture.subject ||
+                                ""
+                            )
+                            .toLowerCase()
+                            .includes(search)
+
+
+                            ||
+
+                            String(
+                                lecture.teacher_name ||
+                                ""
+                            )
+                            .toLowerCase()
+                            .includes(search)
+
+
+                            ||
+
+                            String(
+                                lecture.room ||
+                                ""
+                            )
+                            .toLowerCase()
+                            .includes(search)
+
+                        );
+
+                    }
+                );
+
+
+            displaySchedule(
+                filtered
+            );
+
+        }
+
+
+
+        // =========================================
+        // OPEN ADD MODAL
+        // =========================================
+
+        function openAddModal() {
+
+
+            editingLectureId =
+                null;
+
+
+            document.getElementById(
+                "modalTitle"
+            ).textContent =
+                "Add Lecture";
+
+
+            document.getElementById(
+                "submitButton"
+            ).textContent =
+                "Add Lecture";
+
+
+            document.getElementById(
+                "scheduleForm"
+            ).reset();
+
+
+            document.getElementById(
+                "scheduleModal"
+            ).style.display =
+                "flex";
+
+
+        }
+
+
+
+        // =========================================
+        // EDIT LECTURE
+        // =========================================
+
+        function editLecture(id) {
+
+
+            const lecture =
+                allSchedule.find(
+                    function(item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (!lecture) {
+
+                alert(
+                    "Lecture not found."
+                );
+
+                return;
+
+            }
+
+
+            editingLectureId =
+                id;
+
+
+            document.getElementById(
+                "modalTitle"
+            ).textContent =
+                "Edit Lecture";
+
+
+            document.getElementById(
+                "submitButton"
+            ).textContent =
+                "Save Changes";
+
+
+            document.getElementById(
+                "course"
+            ).value =
+                lecture.course || "";
+
+
+            document.getElementById(
+                "subject"
+            ).value =
+                lecture.subject || "";
+
+
+            document.getElementById(
+                "teacherName"
+            ).value =
+                lecture.teacher_name || "";
+
+
+            document.getElementById(
+                "lectureDate"
+            ).value =
+                normalizeDateInput(
+                    lecture.lecture_date
+                );
+
+
+            document.getElementById(
+                "startTime"
+            ).value =
+                normalizeTimeInput(
+                    lecture.start_time
+                );
+
+
+            document.getElementById(
+                "endTime"
+            ).value =
+                normalizeTimeInput(
+                    lecture.end_time
+                );
+
+
+            document.getElementById(
+                "room"
+            ).value =
+                lecture.room || "";
+
+
+            document.getElementById(
+                "description"
+            ).value =
+                lecture.description || "";
+
+
+            document.getElementById(
+                "scheduleModal"
+            ).style.display =
+                "flex";
+
+        }
+
+
+
+        // =========================================
+        // SAVE LECTURE
+        // =========================================
+
+        async function saveLecture(
+            event
+        ) {
+
+
+            event.preventDefault();
+
+
+            const course =
+                document.getElementById(
+                    "course"
+                ).value;
+
+
+            const subject =
+                document.getElementById(
+                    "subject"
+                ).value
+                .trim();
+
+
+            const teacherName =
+                document.getElementById(
+                    "teacherName"
+                ).value
+                .trim();
+
+
+            const lectureDate =
+                document.getElementById(
+                    "lectureDate"
+                ).value;
+
+
+            const startTime =
+                document.getElementById(
+                    "startTime"
+                ).value;
+
+
+            const endTime =
+                document.getElementById(
+                    "endTime"
+                ).value;
+
+
+            const room =
+                document.getElementById(
+                    "room"
+                ).value
+                .trim();
+
+
+            const description =
+                document.getElementById(
+                    "description"
+                ).value
+                .trim();
+
+
+
+            if (
+                endTime <= startTime
+            ) {
+
+                alert(
+                    "End time must be after start time."
+                );
+
+                return;
+
+            }
+
+
+
+            const body = {
+
+                course:
+                    course,
+
+                subject:
+                    subject,
+
+                teacherName:
+                    teacherName,
+
+                lectureDate:
+                    lectureDate,
+
+                startTime:
+                    startTime,
+
+                endTime:
+                    endTime,
+
+                room:
+                    room,
+
+                description:
+                    description
+
+            };
+
+
+
+            let url;
+
+            let method;
+
+
+
+            if (
+                editingLectureId
+            ) {
+
+                url =
+                    API_URL +
+                    "/admin/schedule/" +
+                    editingLectureId;
+
+                method =
+                    "PUT";
+
+            } else {
+
+                url =
+                    API_URL +
+                    "/admin/schedule";
+
+                method =
+                    "POST";
+
+            }
+
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        url,
+                        {
+
+                            method:
+                                method,
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    body
+                                )
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to save lecture"
+                    );
+
+                }
+
+
+                alert(
+
+                    editingLectureId
+
+                        ? "Lecture updated successfully!"
+
+                        : "Lecture added successfully!"
+
+                );
+
+
+                closeModal();
+
+
+                await loadSchedule();
+
+
+            } catch(error) {
+
+
+                console.error(
+                    "Save lecture error:",
+                    error
+                );
+
+
+                alert(
+                    error.message
+                );
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // DELETE LECTURE
+        // =========================================
+
+        async function deleteLecture(
+            id
+        ) {
+
+
+            const lecture =
+                allSchedule.find(
+                    function(item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            const subject =
+                lecture
+                    ? lecture.subject
+                    : "this lecture";
+
+
+            const confirmDelete =
+                confirm(
+
+                    "Delete " +
+                    subject +
+                    " lecture?"
+
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+
+                        API_URL +
+                        "/admin/schedule/" +
+                        id,
+
+                        {
+
+                            method:
+                                "DELETE"
+
+                        }
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to delete lecture"
+                    );
+
+                }
+
+
+                alert(
+                    "Lecture deleted successfully!"
+                );
+
+
+                await loadSchedule();
+
+
+            } catch(error) {
+
+
+                console.error(
+                    "Delete lecture error:",
+                    error
+                );
+
+
+                alert(
+                    "Delete failed: " +
+                    error.message
+                );
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // CLOSE MODAL
+        // =========================================
+
+        function closeModal() {
+
+
+            document.getElementById(
+                "scheduleModal"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "scheduleForm"
+            ).reset();
+
+
+            editingLectureId =
+                null;
+
+        }
+
+
+
+        // =========================================
+        // DATE FORMAT
+        // =========================================
+
+        function formatDate(
+            dateValue
+        ) {
+
+
+            if (!dateValue) {
+
+                return "-";
+
+            }
+
+
+            const parts =
+                String(
+                    dateValue
+                ).split("-");
+
+
+            if (
+                parts.length !== 3
+            ) {
+
+                return dateValue;
+
+            }
+
+
+            const date =
+                new Date(
+
+                    Number(parts[0]),
+
+                    Number(parts[1]) - 1,
+
+                    Number(parts[2])
+
+                );
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+
+                    day:
+                        "2-digit",
+
+                    month:
+                        "short",
+
+                    year:
+                        "numeric"
+
+                }
+            );
+
+        }
+
+
+
+        // =========================================
+        // NORMALIZE DATE
+        // =========================================
+
+        function normalizeDateInput(
+            value
+        ) {
+
+
+            if (!value) {
+
+                return "";
+
+            }
+
+
+            return String(
+                value
+            ).substring(
+                0,
+                10
+            );
+
+        }
+
+
+
+        // =========================================
+        // TIME FORMAT
+        // =========================================
+
+        function formatTime(
+            value
+        ) {
+
+
+            if (!value) {
+
+                return "-";
+
+            }
+
+
+            const parts =
+                String(
+                    value
+                ).split(":");
+
+
+            if (
+                parts.length < 2
+            ) {
+
+                return value;
+
+            }
+
+
+            let hour =
+                Number(
+                    parts[0]
+                );
+
+
+            const minute =
+                parts[1];
+
+
+            const period =
+                hour >= 12
+                    ? "PM"
+                    : "AM";
+
+
+            hour =
+                hour % 12;
+
+
+            if (
+                hour === 0
+            ) {
+
+                hour =
+                    12;
+
+            }
+
+
+            return (
+
+                String(hour) +
+                ":" +
+                minute +
+                " " +
+                period
+
+            );
+
+        }
+
+
+
+        // =========================================
+        // NORMALIZE TIME
+        // =========================================
+
+        function normalizeTimeInput(
+            value
+        ) {
+
+
+            if (!value) {
+
+                return "";
+
+            }
+
+
+            return String(
+                value
+            ).substring(
+                0,
+                5
+            );
+
+        }
+
+
+
+        // =========================================
+        // ESCAPE HTML
+        // =========================================
+
+        function escapeHtml(
+            value
+        ) {
+
+
+            return String(
+                value ?? ""
+            )
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+
+
+        // =========================================
+        // BACK TO ADMIN DASHBOARD
+        // =========================================
+
+        function goBack() {
+
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+
+
+
+        // =========================================
+        // LOGOUT
+        // =========================================
+
+        function logout() {
+
+
+            localStorage.removeItem(
+                "admin"
+            );
+
+
+            window.location.href =
+                "admin-login.html";
+
+        }
+
+
+
+        // =========================================
+        // OUTSIDE CLICK
+        // =========================================
+
+        window.addEventListener(
+            "click",
+            function(event) {
+
+
+                const modal =
+                    document.getElementById(
+                        "scheduleModal"
+                    );
+
+
+                if (
+                    event.target ===
+                    modal
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+
+        // =========================================
+        // START
+        // =========================================
+
+        loadCourses();
+
+        loadSchedule();
+
+
+    </script>
+
+
+</body>
+
+</html>

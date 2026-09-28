@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MECC - Notes</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2563eb;
+            border: none;
+            padding: 9px 17px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #e5edff;
+        }
+
+        /* Main */
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        .course-box {
+            margin-top: 15px;
+            display: inline-block;
+            background: #e0ecff;
+            color: #1d4ed8;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* Notes grid */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            border-top: 5px solid #2563eb;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .subject {
+            color: #2563eb;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .note-card h2 {
+            color: #172554;
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .open-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 17px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .open-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Error */
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* No notes */
+        .no-notes {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .no-notes h2 {
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+        .no-notes p {
+            color: #777;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 14px 16px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">MECC</div>
+
+        <button class="back-btn" onclick="goBack()">
+            ← Dashboard
+        </button>
+    </div>
+
+    <!-- Main -->
+    <div class="container">
+
+        <div class="welcome">
+            <h1>📚 Notes & Study Material</h1>
+
+            <p>
+                View and access your course study material below.
+            </p>
+
+            <div class="course-box" id="courseName">
+                Loading course...
+            </div>
+        </div>
+
+        <!-- Notes will appear here -->
+        <div id="notesContainer">
+
+            <div class="loading">
+                Loading notes...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API_URL = "http://localhost:3000";
+
+
+        // ================================
+        // CHECK STUDENT LOGIN
+        // ================================
+
+        const studentData = localStorage.getItem("student");
+
+        if (!studentData) {
+
+            alert("Please login first.");
+
+            window.location.href = "login.html";
+
+        }
+
+
+        let student = null;
+
+        try {
+
+            student = JSON.parse(studentData);
+
+        } catch (error) {
+
+            console.error("Student data error:", error);
+
+            localStorage.removeItem("student");
+
+            window.location.href = "login.html";
+
+        }
+
+
+        // ================================
+        // GET STUDENT COURSE
+        // ================================
+
+        let course = "";
+
+        if (student) {
+
+            course =
+                student.course ||
+                student.course_name ||
+                "";
+
+        }
+
+
+        // Display course
+        document.getElementById("courseName").textContent =
+            course || "Course not available";
+
+
+        // ================================
+        // LOAD NOTES
+        // ================================
+
+        async function loadNotes() {
+
+            const container =
+                document.getElementById("notesContainer");
+
+
+            if (!course) {
+
+                container.innerHTML = `
+                    <div class="error">
+                        Student course information is not available.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/notes/${encodeURIComponent(course)}`
+                    );
+
+
+                const data = await response.json();
+
+
+                console.log("Notes API Response:", data);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message || "Unable to load notes"
+                    );
+
+                }
+
+
+                // Backend may return notes in different keys
+                const notes =
+                    data.notes ||
+                    data.result ||
+                    [];
+
+
+                if (!Array.isArray(notes) || notes.length === 0) {
+
+                    container.innerHTML = `
+                        <div class="no-notes">
+
+                            <h2>📖 No Notes Available</h2>
+
+                            <p>
+                                Notes for <b>${escapeHtml(course)}</b>
+                                have not been uploaded yet.
+                            </p>
+
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                // Create cards
+                let html = `<div class="notes-grid">`;
+
+
+                notes.forEach(note => {
+
+                    const subject =
+                        note.subject || "General";
+
+                    const title =
+                        note.title || "Study Material";
+
+                    const description =
+                        note.description ||
+                        "Study material for students.";
+
+                    const noteUrl =
+                        note.note_url ||
+                        note.noteUrl ||
+                        note.url ||
+                        "#";
+
+
+                    html += `
+
+                        <div class="note-card">
+
+                            <div class="subject">
+                                📘 ${escapeHtml(subject)}
+                            </div>
+
+                            <h2>
+                                ${escapeHtml(title)}
+                            </h2>
+
+                            <p class="description">
+                                ${escapeHtml(description)}
+                            </p>
+
+                            ${
+                                noteUrl !== "#"
+                                ?
+                                `
+                                <a
+                                    href="${escapeAttribute(noteUrl)}"
+                                    target="_blank"
+                                    class="open-btn"
+                                >
+                                    📄 Open Note
+                                </a>
+                                `
+                                :
+                                `
+                                <button
+                                    class="open-btn"
+                                    disabled
+                                    style="opacity:0.5; border:none;"
+                                >
+                                    Note Not Available
+                                </button>
+                                `
+                            }
+
+                        </div>
+
+                    `;
+
+                });
+
+
+                html += `</div>`;
+
+
+                container.innerHTML = html;
+
+
+            } catch (error) {
+
+                console.error("Notes Error:", error);
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        ❌ Unable to load notes.
+
+                        <br><br>
+
+                        Please make sure the MECC backend
+                        is running on port 3000.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        // ================================
+        // SECURITY HELPERS
+        // ================================
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        function escapeAttribute(value) {
+
+            return String(value)
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        // ================================
+        // BACK TO DASHBOARD
+        // ================================
+
+        function goBack() {
+
+            window.location.href = "dashboard.html";
+
+        }
+
+
+        // ================================
+        // START
+        // ================================
+
+        loadNotes();
+
+    </script>
+
+</body>
+</html>

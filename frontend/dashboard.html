@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MECC - Student Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .student-name {
+            color: #e2e8f0;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #ef4444;
+            color: white;
+
+            padding: 9px 16px;
+            border-radius: 8px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 35px 20px;
+        }
+
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+
+        /* ================= PROFILE CARD ================= */
+
+        .profile-card {
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+            color: white;
+
+            padding: 28px;
+            border-radius: 20px;
+
+            margin-bottom: 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow:
+                0 15px 35px
+                rgba(37, 99, 235, 0.25);
+        }
+
+        .profile-left h2 {
+            margin-bottom: 8px;
+            font-size: 25px;
+        }
+
+        .profile-left p {
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .profile-icon {
+            width: 75px;
+            height: 75px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.2);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 35px;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+
+        /* ================= CARDS ================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            min-height: 210px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.07);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .card-icon {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            font-size: 25px;
+
+            margin-bottom: 18px;
+
+            background: #eff6ff;
+        }
+
+        .dashboard-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-card p {
+            color: #64748b;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .arrow {
+            margin-top: 15px;
+
+            color: #2563eb;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= INFO SECTION ================= */
+
+        .info-section {
+            margin-top: 35px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.07);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #e2e8f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #64748b;
+        }
+
+        .info-value {
+            font-weight: bold;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .profile-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .profile-icon {
+                display: none;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .student-name {
+                display: none;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .welcome h1 {
+                font-size: 26px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        MECC<span>.</span>
+    </div>
+
+
+    <div class="nav-right">
+
+        <span
+            id="navStudentName"
+            class="student-name">
+
+            Student
+
+        </span>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h1 id="welcomeText">
+            Welcome!
+        </h1>
+
+        <p>
+            Welcome to your MECC Student Dashboard.
+        </p>
+
+    </section>
+
+
+
+    <!-- ================= PROFILE CARD ================= -->
+
+    <section class="profile-card">
+
+        <div class="profile-left">
+
+            <h2 id="studentName">
+                Student
+            </h2>
+
+            <p id="studentEmail">
+                Email
+            </p>
+
+            <p id="studentCourse">
+                Course
+            </p>
+
+        </div>
+
+
+        <div class="profile-icon">
+            👨‍🎓
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= SERVICES ================= -->
+
+    <h2 class="section-title">
+        Student Services
+    </h2>
+
+
+    <section class="cards">
+
+
+        <!-- ATTENDANCE -->
+
+        <div
+            class="dashboard-card"
+            onclick="openAttendance()">
+
+            <div class="card-icon">
+                📊
+            </div>
+
+            <h3>
+                Attendance
+            </h3>
+
+            <p>
+                View your attendance records,
+                subjects and attendance status.
+            </p>
+
+            <div class="arrow">
+                View Attendance →
+            </div>
+
+        </div>
+
+
+
+        <!-- FEES -->
+
+        <div
+            class="dashboard-card"
+            onclick="openFees()">
+
+            <div class="card-icon">
+                💰
+            </div>
+
+            <h3>
+                Fees
+            </h3>
+
+            <p>
+                Check total fees, paid fees,
+                pending fees and payment status.
+            </p>
+
+            <div class="arrow">
+                View Fees →
+            </div>
+
+        </div>
+
+
+
+        <!-- NOTES -->
+
+        <div
+            class="dashboard-card"
+            onclick="openNotes()">
+
+            <div class="card-icon">
+                📚
+            </div>
+
+            <h3>
+                Notes & Lectures
+            </h3>
+
+            <p>
+                Access your course notes,
+                study material and lecture resources.
+            </p>
+
+            <div class="arrow">
+                Open Notes →
+            </div>
+
+        </div>
+
+
+
+        <!-- LECTURE SCHEDULE -->
+
+        <div
+            class="dashboard-card"
+            onclick="openSchedule()">
+
+            <div class="card-icon">
+                📅
+            </div>
+
+            <h3>
+                Lecture Schedule
+            </h3>
+
+            <p>
+                Check your upcoming lectures,
+                subjects, teachers, time and room.
+            </p>
+
+            <div class="arrow">
+                View Schedule →
+            </div>
+
+        </div>
+
+
+
+        <!-- EXAMINATION -->
+
+        <div
+            class="dashboard-card"
+            onclick="openTestScores()">
+
+            <div class="card-icon">
+                📝
+            </div>
+
+            <h3>
+                Examination
+            </h3>
+
+            <p>
+                View your test scores,
+                marks, percentage and examination results.
+            </p>
+
+            <div class="arrow">
+                View Results →
+            </div>
+
+        </div>
+
+
+
+        <!-- MY PROFILE -->
+
+        <div
+            class="dashboard-card"
+            onclick="showProfile()">
+
+            <div class="card-icon">
+                👤
+            </div>
+
+            <h3>
+                My Profile
+            </h3>
+
+            <p>
+                View your personal and
+                academic information.
+            </p>
+
+            <div class="arrow">
+                View Profile →
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= STUDENT INFORMATION ================= -->
+
+    <section class="info-section">
+
+        <h2 class="section-title">
+            Student Information
+        </h2>
+
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Student ID
+            </span>
+
+            <span
+                class="info-value"
+                id="infoStudentId">
+
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Full Name
+            </span>
+
+            <span
+                class="info-value"
+                id="infoName">
+
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Email
+            </span>
+
+            <span
+                class="info-value"
+                id="infoEmail">
+
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Phone
+            </span>
+
+            <span
+                class="info-value"
+                id="infoPhone">
+
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Course
+            </span>
+
+            <span
+                class="info-value"
+                id="infoCourse">
+
+            </span>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+    // ============================================
+    // GET STUDENT DATA
+    // ============================================
+
+    function getStudent() {
+
+        const savedStudent =
+            localStorage.getItem("student");
+
+
+        if (!savedStudent) {
+
+            return null;
+
+        }
+
+
+        try {
+
+            return JSON.parse(
+                savedStudent
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Student data error:",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+
+    const student =
+        getStudent();
+
+
+
+    // ============================================
+    // GET STUDENT ID
+    // ============================================
+
+    let studentId =
+        localStorage.getItem("studentId");
+
+
+    if (!studentId && student) {
+
+        studentId =
+            student.id ||
+            student.studentId ||
+            student.student_id ||
+            "";
+
+    }
+
+
+
+    // ============================================
+    // LOGIN CHECK
+    // ============================================
+
+    if (!student || !studentId) {
+
+        window.location.href =
+            "login.html";
+
+    }
+    else {
+
+
+        // ========================================
+        // STUDENT DATA
+        // ========================================
+
+        const name =
+            student.full_name ||
+            student.fullName ||
+            student.name ||
+            "Student";
+
+
+        const email =
+            student.email ||
+            "-";
+
+
+        const phone =
+            student.phone ||
+            "-";
+
+
+        const course =
+            student.course ||
+            student.course_name ||
+            "-";
+
+
+
+        // ========================================
+        // DISPLAY DATA
+        // ========================================
+
+        document.getElementById(
+            "welcomeText"
+        ).textContent =
+            "Welcome, " + name + "!";
+
+
+        document.getElementById(
+            "navStudentName"
+        ).textContent =
+            name;
+
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+            name;
+
+
+        document.getElementById(
+            "studentEmail"
+        ).textContent =
+            email;
+
+
+        document.getElementById(
+            "studentCourse"
+        ).textContent =
+            "Course: " + course;
+
+
+
+        // ========================================
+        // STUDENT INFORMATION
+        // ========================================
+
+        document.getElementById(
+            "infoStudentId"
+        ).textContent =
+            studentId;
+
+
+        document.getElementById(
+            "infoName"
+        ).textContent =
+            name;
+
+
+        document.getElementById(
+            "infoEmail"
+        ).textContent =
+            email;
+
+
+        document.getElementById(
+            "infoPhone"
+        ).textContent =
+            phone;
+
+
+        document.getElementById(
+            "infoCourse"
+        ).textContent =
+            course;
+
+    }
+
+
+
+    // ============================================
+    // ATTENDANCE
+    // ============================================
+
+    function openAttendance() {
+
+        window.location.href =
+            "attendance.html";
+
+    }
+
+
+
+    // ============================================
+    // FEES
+    // ============================================
+
+    function openFees() {
+
+        window.location.href =
+            "fees.html";
+
+    }
+
+
+
+    // ============================================
+    // NOTES
+    // ============================================
+
+    function openNotes() {
+
+        window.location.href =
+            "notes.html";
+
+    }
+
+
+
+    // ============================================
+    // LECTURE SCHEDULE
+    // ============================================
+
+    function openSchedule() {
+
+        window.location.href =
+            "schedule.html";
+
+    }
+
+
+
+    // ============================================
+    // TEST SCORES / EXAMINATION
+    // ============================================
+
+    function openTestScores() {
+
+        window.location.href =
+            "test-scores.html";
+
+    }
+
+
+
+    // ============================================
+    // MY PROFILE
+    // ============================================
+
+    function showProfile() {
+
+        document.querySelector(
+            ".info-section"
+        ).scrollIntoView({
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+
+
+    // ============================================
+    // LOGOUT
+    // ============================================
+
+    function logout() {
+
+        localStorage.removeItem(
+            "studentId"
+        );
+
+
+        localStorage.removeItem(
+            "student"
+        );
+
+
+        window.location.href =
+            "login.html";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

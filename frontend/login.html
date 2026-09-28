@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MECC - Student Login</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .logo {
+            text-align: center;
+            color: white;
+            font-size: 34px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #dbeafe;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-card h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 25px;
+        }
+
+        .login-card .description {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 55px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .login-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 11px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .bottom-links {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+        }
+
+        .bottom-links a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .bottom-links a:hover {
+            text-decoration: underline;
+        }
+
+        .admin-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .admin-link a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .admin-link a:hover {
+            color: #2563eb;
+        }
+
+        @media (max-width: 500px) {
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            .logo {
+                font-size: 29px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">
+            MECC<span>.</span>
+        </div>
+
+        <div class="subtitle">
+            My Education Coaching Classes
+        </div>
+
+
+        <div class="login-card">
+
+            <h1>
+                Student Login
+            </h1>
+
+            <p class="description">
+                Login to view your attendance, fees and academic records.
+            </p>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form
+                id="loginForm"
+                onsubmit="loginStudent(event)">
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email">
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password">
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                            id="showPasswordBtn">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginBtn">
+
+                    Login
+
+                </button>
+
+            </form>
+
+
+            <!-- REGISTER -->
+
+            <div class="bottom-links">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Register
+                </a>
+
+            </div>
+
+
+            <!-- ADMIN -->
+
+            <div class="admin-link">
+
+                <a href="admin-login.html">
+                    Admin Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+
+// ==================================================
+// API URL
+// ==================================================
+
+const API_URL =
+    "http://localhost:3000";
+
+
+// ==================================================
+// STUDENT LOGIN
+// ==================================================
+
+async function loginStudent(event) {
+
+    event.preventDefault();
+
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
+
+
+    hideMessage();
+
+
+    // ----------------------------------------------
+    // VALIDATION
+    // ----------------------------------------------
+
+    if (!email || !password) {
+
+        showMessage(
+            "Please enter email and password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // ----------------------------------------------
+    // DISABLE BUTTON
+    // ----------------------------------------------
+
+    loginBtn.disabled = true;
+
+    loginBtn.textContent =
+        "Logging in...";
+
+
+    try {
+
+
+        // ------------------------------------------
+        // API REQUEST
+        // ------------------------------------------
+
+        const response =
+            await fetch(
+                API_URL + "/login",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            email:
+                                email,
+
+                            password:
+                                password
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Login response:",
+            data
+        );
+
+
+        // ------------------------------------------
+        // ERROR
+        // ------------------------------------------
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Login failed"
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // SAVE STUDENT DATA
+        // ------------------------------------------
+
+        localStorage.setItem(
+            "student",
+            JSON.stringify(
+                data.student
+            )
+        );
+
+
+        // ------------------------------------------
+        // SUCCESS
+        // ------------------------------------------
+
+        showMessage(
+            "Login successful! Opening dashboard...",
+            "success"
+        );
+
+
+        // ------------------------------------------
+        // OPEN STUDENT DASHBOARD
+        // ------------------------------------------
+
+        setTimeout(
+            function() {
+
+                window.location.href = "dashboard.html";
+
+            },
+            700
+        );
+
+
+    }
+
+    catch (error) {
+
+
+        console.error(
+            "Login error:",
+            error
+        );
+
+
+        showMessage(
+            error.message ||
+            "Unable to connect to MECC server.",
+            "error"
+        );
+
+
+        loginBtn.disabled = false;
+
+        loginBtn.textContent =
+            "Login";
+
+    }
+
+}
+
+
+// ==================================================
+// SHOW / HIDE PASSWORD
+// ==================================================
+
+function togglePassword() {
+
+
+    const password =
+        document.getElementById(
+            "password"
+        );
+
+
+    const button =
+        document.getElementById(
+            "showPasswordBtn"
+        );
+
+
+    if (
+        password.type === "password"
+    ) {
+
+        password.type =
+            "text";
+
+        button.textContent =
+            "Hide";
+
+    }
+
+    else {
+
+        password.type =
+            "password";
+
+        button.textContent =
+            "Show";
+
+    }
+
+}
+
+
+// ==================================================
+// SHOW MESSAGE
+// ==================================================
+
+function showMessage(
+    text,
+    type
+) {
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.className =
+        "message " + type;
+
+
+    message.textContent =
+        text;
+
+
+    message.style.display =
+        "block";
+
+}
+
+
+// ==================================================
+// HIDE MESSAGE
+// ==================================================
+
+function hideMessage() {
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.style.display =
+        "none";
+
+
+    message.textContent =
+        "";
+
+}
+
+
+// ==================================================
+// CHECK IF ALREADY LOGGED IN
+// ==================================================
+
+const existingStudent =
+    localStorage.getItem(
+        "student"
+    );
+
+
+if (existingStudent) {
+
+    try {
+
+        JSON.parse(
+            existingStudent
+        );
+
+        // Already logged in.
+        // We don't automatically redirect,
+        // so the user can login with another account.
+
+    }
+
+    catch (error) {
+
+        localStorage.removeItem(
+            "student"
+        );
+
+    }
+
+}
+
+
+</script>
+
+</body>
+
+</html>

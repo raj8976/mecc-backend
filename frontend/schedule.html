@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MECC - Lecture Schedule</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: #f1f5f9;
+
+            color: #1e293b;
+
+        }
+
+
+        .navbar {
+
+            height: 70px;
+
+            background: #111827;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+        }
+
+
+        .logo span {
+
+            color: #60a5fa;
+
+        }
+
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .student-name {
+
+            color: #e2e8f0;
+
+        }
+
+
+        .back-btn {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 9px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .back-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 35px 20px;
+
+        }
+
+
+        .page-header {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .page-header h1 {
+
+            font-size: 32px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .page-header p {
+
+            color: #64748b;
+
+        }
+
+
+        .course-box {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 18px 22px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.07);
+
+        }
+
+
+        .course-box strong {
+
+            color: #2563eb;
+
+        }
+
+
+        .schedule-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .lecture-card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.07);
+
+            transition:
+                transform .2s,
+                box-shadow .2s;
+
+        }
+
+
+        .lecture-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 15px 30px rgba(0,0,0,.12);
+
+        }
+
+
+        .lecture-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .subject {
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            color: #1e293b;
+
+        }
+
+
+        .date-badge {
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            padding: 7px 10px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+
+        .lecture-info {
+
+            display: grid;
+
+            gap: 10px;
+
+        }
+
+
+        .info-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+        }
+
+
+        .info-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .label {
+
+            color: #64748b;
+
+        }
+
+
+        .value {
+
+            font-weight: bold;
+
+            text-align: right;
+
+        }
+
+
+        .time-box {
+
+            margin-top: 15px;
+
+            background: #eff6ff;
+
+            color: #1d4ed8;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+        }
+
+
+        .room-box {
+
+            margin-top: 10px;
+
+            background: #f8fafc;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            color: #475569;
+
+        }
+
+
+        .description {
+
+            margin-top: 12px;
+
+            color: #64748b;
+
+            line-height: 1.5;
+
+            font-size: 14px;
+
+        }
+
+
+        .loading,
+        .empty,
+        .error {
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.07);
+
+        }
+
+
+        .loading {
+
+            color: #64748b;
+
+        }
+
+
+        .empty {
+
+            color: #64748b;
+
+        }
+
+
+        .error {
+
+            color: #dc2626;
+
+        }
+
+
+        .today {
+
+            border:
+                2px solid #2563eb;
+
+        }
+
+
+        .today-label {
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        @media(max-width: 800px) {
+
+            .schedule-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .navbar {
+
+                padding: 0 15px;
+
+            }
+
+
+            .student-name {
+
+                display: none;
+
+            }
+
+
+            .container {
+
+                padding:
+                    25px 15px;
+
+            }
+
+
+            .page-header h1 {
+
+                font-size: 26px;
+
+            }
+
+
+            .lecture-top {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .info-row {
+
+                flex-direction:
+                    column;
+
+                gap: 5px;
+
+            }
+
+
+            .value {
+
+                text-align: left;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            MECC<span>.</span>
+
+        </div>
+
+
+        <div class="nav-right">
+
+            <span
+                id="studentName"
+                class="student-name">
+                Student
+            </span>
+
+
+            <button
+                class="back-btn"
+                onclick="goBack()">
+
+                ← Dashboard
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <section class="page-header">
+
+            <h1>
+                Lecture Schedule
+            </h1>
+
+            <p>
+                View your upcoming MECC lectures.
+            </p>
+
+        </section>
+
+
+
+        <!-- COURSE -->
+
+        <div class="course-box">
+
+            <span>
+                Your Course:
+            </span>
+
+            <strong id="studentCourse">
+                Loading...
+            </strong>
+
+        </div>
+
+
+
+        <!-- SCHEDULE -->
+
+        <div id="scheduleContainer"
+             class="schedule-grid">
+
+            <div class="loading">
+
+                Loading lecture schedule...
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        // =========================================
+        // API
+        // =========================================
+
+        const API_URL =
+            "http://localhost:3000";
+
+
+
+        // =========================================
+        // GET STUDENT
+        // =========================================
+
+        function getStudent() {
+
+            const saved =
+                localStorage.getItem(
+                    "student"
+                );
+
+
+            if (!saved) {
+
+                return null;
+
+            }
+
+
+            try {
+
+                return JSON.parse(saved);
+
+            } catch(error) {
+
+                console.error(
+                    "Student data error:",
+                    error
+                );
+
+                return null;
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // STUDENT
+        // =========================================
+
+        const student =
+            getStudent();
+
+
+        const studentId =
+            localStorage.getItem(
+                "studentId"
+            );
+
+
+
+        // =========================================
+        // AUTH CHECK
+        // =========================================
+
+        if (
+            !student ||
+            !studentId
+        ) {
+
+            window.location.href =
+                "login.html";
+
+        } else {
+
+            loadStudent();
+
+            loadSchedule();
+
+        }
+
+
+
+        // =========================================
+        // LOAD STUDENT
+        // =========================================
+
+        function loadStudent() {
+
+            const name =
+                student.full_name ||
+                "Student";
+
+
+            const course =
+                student.course ||
+                "";
+
+
+            document.getElementById(
+                "studentName"
+            ).textContent =
+                name;
+
+
+            document.getElementById(
+                "studentCourse"
+            ).textContent =
+                course;
+
+        }
+
+
+
+        // =========================================
+        // LOAD SCHEDULE
+        // =========================================
+
+        async function loadSchedule() {
+
+            const container =
+                document.getElementById(
+                    "scheduleContainer"
+                );
+
+
+            const course =
+                String(
+                    student.course || ""
+                ).trim();
+
+
+            if (!course) {
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        Course information is
+                        not available.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            try {
+
+                const response =
+                    await fetch(
+
+                        API_URL +
+                        "/schedule/" +
+                        encodeURIComponent(
+                            course
+                        )
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+
+                        data.message ||
+                        "Unable to load schedule"
+
+                    );
+
+                }
+
+
+
+                const schedule =
+                    Array.isArray(
+                        data.schedule
+                    )
+                    ? data.schedule
+                    : [];
+
+
+
+                if (
+                    schedule.length === 0
+                ) {
+
+                    container.innerHTML = `
+
+                        <div class="empty">
+
+                            <h3>
+                                No lectures scheduled
+                            </h3>
+
+                            <p style="margin-top:8px;">
+                                There is currently
+                                no lecture schedule
+                                for your course.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+
+                container.innerHTML =
+
+                    schedule
+                    .map(
+                        function(lecture) {
+
+                            return createLectureCard(
+                                lecture
+                            );
+
+                        }
+                    )
+                    .join("");
+
+
+
+            } catch(error) {
+
+                console.error(
+                    "Schedule error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        <h3>
+                            Unable to load schedule
+                        </h3>
+
+                        <p style="margin-top:8px;">
+
+                            ${escapeHtml(
+                                error.message
+                            )}
+
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // =========================================
+        // CREATE LECTURE CARD
+        // =========================================
+
+        function createLectureCard(
+            lecture
+        ) {
+
+            const lectureDate =
+                lecture.lecture_date;
+
+
+            const formattedDate =
+                formatDate(
+                    lectureDate
+                );
+
+
+            const dayName =
+                getDayName(
+                    lectureDate
+                );
+
+
+            const time =
+                formatTimeRange(
+                    lecture.start_time,
+                    lecture.end_time
+                );
+
+
+            const isToday =
+                isDateToday(
+                    lectureDate
+                );
+
+
+            return `
+
+                <div class="lecture-card
+                    ${isToday ? "today" : ""}">
+
+
+                    ${
+                        isToday
+
+                        ? `
+
+                            <div class="today-label">
+
+                                TODAY
+
+                            </div>
+
+                          `
+
+                        : ""
+
+                    }
+
+
+                    <div class="lecture-top">
+
+                        <div class="subject">
+
+                            ${escapeHtml(
+                                lecture.subject ||
+                                "Lecture"
+                            )}
+
+                        </div>
+
+
+                        <div class="date-badge">
+
+                            ${formattedDate}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="lecture-info">
+
+
+                        <div class="info-row">
+
+                            <span class="label">
+                                Day
+                            </span>
+
+                            <span class="value">
+
+                                ${dayName}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-row">
+
+                            <span class="label">
+                                Teacher
+                            </span>
+
+                            <span class="value">
+
+                                ${escapeHtml(
+                                    lecture.teacher_name ||
+                                    "-"
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="info-row">
+
+                            <span class="label">
+                                Course
+                            </span>
+
+                            <span class="value">
+
+                                ${escapeHtml(
+                                    lecture.course ||
+                                    courseText()
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="time-box">
+
+                        🕒 ${time}
+
+                    </div>
+
+
+
+                    ${
+                        lecture.room
+
+                        ? `
+
+                            <div class="room-box">
+
+                                📍 Room:
+                                ${escapeHtml(
+                                    lecture.room
+                                )}
+
+                            </div>
+
+                          `
+
+                        : ""
+
+                    }
+
+
+
+                    ${
+                        lecture.description
+
+                        ? `
+
+                            <div class="description">
+
+                                ${escapeHtml(
+                                    lecture.description
+                                )}
+
+                            </div>
+
+                          `
+
+                        : ""
+
+                    }
+
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        // =========================================
+        // COURSE TEXT
+        // =========================================
+
+        function courseText() {
+
+            return String(
+                student.course || "-"
+            );
+
+        }
+
+
+
+        // =========================================
+        // DATE FORMAT
+        // =========================================
+
+        function formatDate(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+
+                return "-";
+
+            }
+
+
+            const parts =
+                String(
+                    dateValue
+                ).split("-");
+
+
+            if (
+                parts.length !== 3
+            ) {
+
+                return dateValue;
+
+            }
+
+
+            const date =
+                new Date(
+
+                    Number(parts[0]),
+                    Number(parts[1]) - 1,
+                    Number(parts[2])
+
+                );
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        }
+
+
+
+        // =========================================
+        // DAY NAME
+        // =========================================
+
+        function getDayName(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+
+                return "-";
+
+            }
+
+
+            const parts =
+                String(
+                    dateValue
+                ).split("-");
+
+
+            if (
+                parts.length !== 3
+            ) {
+
+                return "-";
+
+            }
+
+
+            const date =
+                new Date(
+
+                    Number(parts[0]),
+                    Number(parts[1]) - 1,
+                    Number(parts[2])
+
+                );
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    weekday: "long"
+                }
+            );
+
+        }
+
+
+
+        // =========================================
+        // TIME FORMAT
+        // =========================================
+
+        function formatTime(
+            timeValue
+        ) {
+
+            if (!timeValue) {
+
+                return "-";
+
+            }
+
+
+            const parts =
+                String(
+                    timeValue
+                ).split(":");
+
+
+            if (
+                parts.length < 2
+            ) {
+
+                return timeValue;
+
+            }
+
+
+            let hour =
+                Number(parts[0]);
+
+
+            const minute =
+                parts[1];
+
+
+            const ampm =
+                hour >= 12
+                    ? "PM"
+                    : "AM";
+
+
+            hour =
+                hour % 12;
+
+
+            if (hour === 0) {
+
+                hour = 12;
+
+            }
+
+
+            return (
+                String(hour) +
+                ":" +
+                minute +
+                " " +
+                ampm
+            );
+
+        }
+
+
+
+        // =========================================
+        // TIME RANGE
+        // =========================================
+
+        function formatTimeRange(
+            start,
+            end
+        ) {
+
+            return (
+                formatTime(start) +
+                " - " +
+                formatTime(end)
+            );
+
+        }
+
+
+
+        // =========================================
+        // TODAY CHECK
+        // =========================================
+
+        function isDateToday(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+
+                return false;
+
+            }
+
+
+            const parts =
+                String(
+                    dateValue
+                ).split("-");
+
+
+            if (
+                parts.length !== 3
+            ) {
+
+                return false;
+
+            }
+
+
+            const year =
+                Number(parts[0]);
+
+            const month =
+                Number(parts[1]);
+
+            const day =
+                Number(parts[2]);
+
+
+            const today =
+                new Date();
+
+
+            return (
+                today.getFullYear() === year &&
+                today.getMonth() + 1 === month &&
+                today.getDate() === day
+            );
+
+        }
+
+
+
+        // =========================================
+        // ESCAPE HTML
+        // =========================================
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+
+
+        // =========================================
+        // BACK
+        // =========================================
+
+        function goBack() {
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>

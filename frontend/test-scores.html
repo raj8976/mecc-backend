@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MECC - Test Scores</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2563eb;
+
+            border: none;
+            padding: 9px 17px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #e5edff;
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+
+            margin: 30px auto;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .welcome {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        .student-info {
+            margin-top: 15px;
+
+            display: flex;
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            background: #e0ecff;
+
+            color: #1d4ed8;
+
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: #666;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+        }
+
+        .summary-card .value {
+            color: #172554;
+
+            font-size: 25px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= SCORE TABLE ================= */
+
+        .table-box {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            overflow-x: auto;
+        }
+
+        .table-box h2 {
+            color: #172554;
+
+            margin-bottom: 18px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+        th {
+            background: #172554;
+
+            color: white;
+
+            padding: 13px;
+
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+
+        /* ================= MARKS ================= */
+
+        .marks {
+            font-weight: bold;
+
+            color: #2563eb;
+        }
+
+        .percentage {
+            font-weight: bold;
+
+            color: #16a34a;
+        }
+
+
+        /* ================= REMARKS ================= */
+
+        .good {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .average {
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        .low {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 40px;
+
+            font-size: 18px;
+
+            color: #666;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+
+        /* ================= NO DATA ================= */
+
+        .no-data {
+            background: white;
+
+            padding: 45px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .no-data h2 {
+            color: #172554;
+
+            margin-bottom: 10px;
+        }
+
+        .no-data p {
+            color: #777;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 14px 16px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .container {
+                width: 94%;
+
+                margin-top: 20px;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <div class="navbar">
+
+        <div class="logo">
+            MECC
+        </div>
+
+        <button
+            class="back-btn"
+            onclick="goBack()">
+
+            ← Dashboard
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- Welcome -->
+
+        <div class="welcome">
+
+            <h1>
+                📝 My Test Scores
+            </h1>
+
+            <p>
+                View your examination and test performance.
+            </p>
+
+
+            <div class="student-info">
+
+                <div
+                    class="info-box"
+                    id="studentName">
+
+                    Student
+
+                </div>
+
+
+                <div
+                    class="info-box"
+                    id="courseName">
+
+                    Course
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <div
+            class="summary"
+            id="summarySection">
+
+            <div class="summary-card">
+
+                <h3>
+                    Total Tests
+                </h3>
+
+                <div
+                    class="value"
+                    id="totalTests">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h3>
+                    Total Marks
+                </h3>
+
+                <div
+                    class="value"
+                    id="totalMarks">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h3>
+                    Marks Obtained
+                </h3>
+
+                <div
+                    class="value"
+                    id="obtainedMarks">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h3>
+                    Overall Percentage
+                </h3>
+
+                <div
+                    class="value"
+                    id="overallPercentage">
+
+                    0%
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= TEST SCORES ================= -->
+
+        <div
+            id="scoresContainer">
+
+            <div class="loading">
+
+                Loading test scores...
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        // =====================================================
+        // API
+        // =====================================================
+
+        const API_URL =
+            "http://localhost:3000";
+
+
+
+        // =====================================================
+        // CHECK LOGIN
+        // =====================================================
+
+        const studentData =
+            localStorage.getItem("student");
+
+
+        if (!studentData) {
+
+            alert("Please login first.");
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+
+        let student = null;
+
+
+        try {
+
+            student =
+                JSON.parse(studentData);
+
+        }
+        catch (error) {
+
+            console.error(
+                "Student data error:",
+                error
+            );
+
+            localStorage.removeItem(
+                "student"
+            );
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+
+        // =====================================================
+        // STUDENT INFORMATION
+        // =====================================================
+
+        let studentId = "";
+
+        let studentName = "";
+
+        let course = "";
+
+
+        if (student) {
+
+            studentId =
+                student.id ||
+                student.studentId ||
+                student.student_id ||
+                localStorage.getItem("studentId");
+
+
+            studentName =
+                student.fullName ||
+                student.full_name ||
+                student.name ||
+                "Student";
+
+
+            course =
+                student.course ||
+                student.course_name ||
+                "Course";
+
+        }
+
+
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+            "👤 " + studentName;
+
+
+        document.getElementById(
+            "courseName"
+        ).textContent =
+            "📚 " + course;
+
+
+
+        // =====================================================
+        // LOAD TEST SCORES
+        // =====================================================
+
+        async function loadTestScores() {
+
+
+            const container =
+                document.getElementById(
+                    "scoresContainer"
+                );
+
+
+            if (!studentId) {
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        Student ID not found.
+                        Please login again.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        `${API_URL}/test-scores/${studentId}`
+                    );
+
+
+
+                const data =
+                    await response.json();
+
+
+
+                console.log(
+                    "Test Scores API:",
+                    data
+                );
+
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load test scores"
+                    );
+
+                }
+
+
+
+                // Backend response support
+
+                const scores =
+                    data.testScores ||
+                    data.scores ||
+                    data.result ||
+                    [];
+
+
+
+                if (
+                    !Array.isArray(scores) ||
+                    scores.length === 0
+                ) {
+
+
+                    container.innerHTML = `
+
+                        <div class="no-data">
+
+                            <h2>
+                                📝 No Test Scores Available
+                            </h2>
+
+                            <p>
+                                Your test scores have not
+                                been uploaded yet.
+                            </p>
+
+                        </div>
+
+                    `;
+
+
+                    updateSummary([]);
+
+
+                    return;
+
+                }
+
+
+
+                // Update summary
+
+                updateSummary(scores);
+
+
+
+                // Create table
+
+                let html = `
+
+                    <div class="table-box">
+
+                        <h2>
+                            📊 Examination Results
+                        </h2>
+
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Test Name
+                                    </th>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Marks
+                                    </th>
+
+                                    <th>
+                                        Percentage
+                                    </th>
+
+                                    <th>
+                                        Exam Date
+                                    </th>
+
+                                    <th>
+                                        Remarks
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                `;
+
+
+
+                scores.forEach(score => {
+
+
+                    const testName =
+                        score.test_name ||
+                        score.testName ||
+                        "Test";
+
+
+                    const subject =
+                        score.subject ||
+                        "General";
+
+
+                    const totalMarks =
+                        Number(
+                            score.total_marks ??
+                            score.totalMarks ??
+                            0
+                        );
+
+
+                    const obtainedMarks =
+                        Number(
+                            score.obtained_marks ??
+                            score.obtainedMarks ??
+                            0
+                        );
+
+
+                    let percentage = 0;
+
+
+                    if (totalMarks > 0) {
+
+                        percentage =
+                            (
+                                obtainedMarks /
+                                totalMarks
+                            ) * 100;
+
+                    }
+
+
+
+                    const examDate =
+                        formatDate(
+                            score.exam_date ||
+                            score.examDate
+                        );
+
+
+                    const remarks =
+                        score.remarks ||
+                        "—";
+
+
+
+                    let remarkClass =
+                        "average";
+
+
+                    if (percentage >= 75) {
+
+                        remarkClass =
+                            "good";
+
+                    }
+                    else if (percentage < 40) {
+
+                        remarkClass =
+                            "low";
+
+                    }
+
+
+
+                    html += `
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    ${escapeHtml(testName)}
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                ${escapeHtml(subject)}
+                            </td>
+
+
+                            <td class="marks">
+
+                                ${obtainedMarks}
+                                /
+                                ${totalMarks}
+
+                            </td>
+
+
+                            <td class="percentage">
+
+                                ${percentage.toFixed(2)}%
+
+                            </td>
+
+
+                            <td>
+
+                                ${examDate}
+
+                            </td>
+
+
+                            <td
+                                class="${remarkClass}">
+
+                                ${escapeHtml(remarks)}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+
+
+                html += `
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                `;
+
+
+
+                container.innerHTML =
+                    html;
+
+
+            }
+            catch (error) {
+
+
+                console.error(
+                    "Test Scores Error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        ❌ Unable to load test scores.
+
+                        <br><br>
+
+                        Please make sure the
+                        MECC backend is running
+                        on port 3000.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // UPDATE SUMMARY
+        // =====================================================
+
+        function updateSummary(scores) {
+
+
+            let totalTests =
+                scores.length;
+
+
+            let totalMarks = 0;
+
+            let obtainedMarks = 0;
+
+
+
+            scores.forEach(score => {
+
+
+                totalMarks += Number(
+                    score.total_marks ??
+                    score.totalMarks ??
+                    0
+                );
+
+
+                obtainedMarks += Number(
+                    score.obtained_marks ??
+                    score.obtainedMarks ??
+                    0
+                );
+
+            });
+
+
+
+            let percentage = 0;
+
+
+            if (totalMarks > 0) {
+
+                percentage =
+                    (
+                        obtainedMarks /
+                        totalMarks
+                    ) * 100;
+
+            }
+
+
+
+            document.getElementById(
+                "totalTests"
+            ).textContent =
+                totalTests;
+
+
+
+            document.getElementById(
+                "totalMarks"
+            ).textContent =
+                totalMarks;
+
+
+
+            document.getElementById(
+                "obtainedMarks"
+            ).textContent =
+                obtainedMarks;
+
+
+
+            document.getElementById(
+                "overallPercentage"
+            ).textContent =
+                percentage.toFixed(2) + "%";
+
+        }
+
+
+
+        // =====================================================
+        // DATE FORMAT
+        // =====================================================
+
+        function formatDate(dateValue) {
+
+
+            if (!dateValue) {
+
+                return "—";
+
+            }
+
+
+            const date =
+                new Date(dateValue);
+
+
+            if (isNaN(date.getTime())) {
+
+                return String(dateValue);
+
+            }
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // SECURITY
+        // =====================================================
+
+        function escapeHtml(value) {
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+
+        // =====================================================
+        // BACK TO DASHBOARD
+        // =====================================================
+
+        function goBack() {
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+
+
+
+        // =====================================================
+        // START
+        // =====================================================
+
+        loadTestScores();
+
+
+    </script>
+
+</body>
+</html>

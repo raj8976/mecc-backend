@@ -1,0 +1,5684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MECC - Admin Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    height:72px;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 18px rgba(15,23,42,.20);
+}
+
+.logo{
+    font-size:29px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#60a5fa;
+}
+
+.admin-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+#adminName{
+    background:rgba(255,255,255,.12);
+    padding:9px 15px;
+    border-radius:25px;
+    font-size:14px;
+}
+
+.logout-btn{
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* ================= MAIN ================= */
+
+.container{
+    max-width:1500px;
+    margin:auto;
+    padding:30px 25px 50px;
+}
+
+.heading{
+    margin-bottom:25px;
+}
+
+.heading h1{
+    font-size:32px;
+    color:#0f172a;
+    margin-bottom:6px;
+}
+
+.heading p{
+    color:#64748b;
+}
+
+/* ================= CLASS FILTER ================= */
+
+.class-selector{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(15,23,42,.07);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.class-selector-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.class-selector-icon{
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    background:#dbeafe;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+}
+
+.class-selector label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:#64748b;
+    margin-bottom:7px;
+}
+
+.class-selector select{
+    min-width:330px;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:15px;
+    background:white;
+}
+
+.selected-class{
+    background:#eff6ff;
+    color:#1d4ed8;
+    border:1px solid #bfdbfe;
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:700;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:28px;
+}
+
+.stat-card{
+    background:white;
+    padding:23px;
+    border-radius:17px;
+    border:1px solid #e2e8f0;
+    box-shadow:0 7px 22px rgba(15,23,42,.06);
+}
+
+.stat-icon{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:13px;
+    background:#eff6ff;
+    font-size:25px;
+    margin-bottom:14px;
+}
+
+.stat-card p{
+    color:#64748b;
+    font-size:13px;
+    font-weight:600;
+}
+
+.stat-card h2{
+    margin-top:6px;
+    font-size:30px;
+    color:#0f172a;
+}
+
+/* ================= CARDS ================= */
+
+.card{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:17px;
+    padding:24px;
+    margin-bottom:25px;
+    box-shadow:0 7px 22px rgba(15,23,42,.055);
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.card-header h2{
+    font-size:21px;
+    color:#0f172a;
+}
+
+/* ================= BUTTONS ================= */
+
+.btn{
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:12px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+    padding:11px 17px;
+}
+
+.btn-refresh{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+.btn-edit{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.btn-delete{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.btn-attendance{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.btn-fees{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+    width:100%;
+    padding:13px 15px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    margin-bottom:18px;
+    outline:none;
+}
+
+/* ================= TABLE ================= */
+
+.table-container{
+    overflow-x:auto;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:950px;
+}
+
+th{
+    background:#f8fafc;
+    text-align:left;
+    padding:14px;
+    color:#475569;
+    font-size:12px;
+    text-transform:uppercase;
+    border-bottom:1px solid #e2e8f0;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #eef2f7;
+    font-size:13px;
+    color:#334155;
+}
+
+tr:hover{
+    background:#f8fbff;
+}
+
+.actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.class-badge{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#ede9fe;
+    color:#6d28d9;
+    font-size:11px;
+    font-weight:700;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.65);
+    backdrop-filter:blur(3px);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:18px;
+    padding:26px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+    padding-bottom:15px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.close{
+    border:none;
+    background:#f1f5f9;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+    font-size:13px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    outline:none;
+    font-size:14px;
+    background:#f8fafc;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    background:white;
+    border-color:#2563eb;
+}
+
+.submit-btn{
+    width:100%;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border:none;
+    padding:13px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* ================= SUMMARY ================= */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:18px 0;
+}
+
+.summary-box{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    padding:15px;
+    text-align:center;
+    border-radius:10px;
+}
+
+.summary-box strong{
+    display:block;
+    font-size:22px;
+    color:#0f172a;
+    margin-bottom:5px;
+}
+
+.fee-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:18px 0;
+}
+
+.fee-box{
+    padding:15px;
+    border-radius:12px;
+    background:#f8fafc;
+    text-align:center;
+}
+
+.fee-box strong{
+    display:block;
+    font-size:20px;
+    margin-top:5px;
+}
+
+.empty{
+    text-align:center;
+    padding:35px;
+    color:#64748b;
+}
+
+.dashboard-footer{
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+    padding:15px 0 30px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1100px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:650px){
+
+    .navbar{
+        padding:0 15px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .admin-area span{
+        display:none;
+    }
+
+    .container{
+        padding:20px 12px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:16px;
+    }
+
+    .class-selector select{
+        min-width:100%;
+    }
+
+    .selected-class{
+        width:100%;
+        text-align:center;
+    }
+
+    .summary,
+    .fee-summary{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<div class="navbar">
+
+    <div class="logo">
+        MECC<span>.</span>
+    </div>
+
+    <div class="admin-area">
+
+        <span id="adminName">
+            Admin
+        </span>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =========================================================
+     HEADING
+========================================================= -->
+
+<div class="heading">
+
+    <h1>
+        Welcome to MECC Admin Dashboard 👋
+    </h1>
+
+    <p>
+        Manage students, attendance, fees, courses,
+        lectures, test results and notes.
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     CLASS FILTER
+========================================================= -->
+
+<div class="class-selector">
+
+    <div class="class-selector-left">
+
+        <div class="class-selector-icon">
+            🎓
+        </div>
+
+        <div>
+
+            <label>
+                SELECT CLASS / COURSE
+            </label>
+
+            <select
+                id="adminClassFilter"
+                onchange="changeAdminClass()"
+            >
+
+                <option value="ALL">
+                    All Classes
+                </option>
+
+                <optgroup label="School">
+
+                    <option value="Class 1">Class 1</option>
+                    <option value="Class 2">Class 2</option>
+                    <option value="Class 3">Class 3</option>
+                    <option value="Class 4">Class 4</option>
+                    <option value="Class 5">Class 5</option>
+                    <option value="Class 6">Class 6</option>
+                    <option value="Class 7">Class 7</option>
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+
+                </optgroup>
+
+                <optgroup label="Junior College">
+
+                    <option value="Class 11 Science">
+                        Class 11 Science
+                    </option>
+
+                    <option value="Class 11 Commerce">
+                        Class 11 Commerce
+                    </option>
+
+                    <option value="Class 11 Arts">
+                        Class 11 Arts
+                    </option>
+
+                    <option value="Class 12 Science">
+                        Class 12 Science
+                    </option>
+
+                    <option value="Class 12 Commerce">
+                        Class 12 Commerce
+                    </option>
+
+                    <option value="Class 12 Arts">
+                        Class 12 Arts
+                    </option>
+
+                </optgroup>
+
+                <optgroup label="Graduation">
+
+                    <option value="BSc IT">BSc IT</option>
+                    <option value="BSc Computer Science">
+                        BSc Computer Science
+                    </option>
+                    <option value="BCA">BCA</option>
+                    <option value="BCom">BCom</option>
+                    <option value="BA">BA</option>
+                    <option value="BBA">BBA</option>
+                    <option value="BE/BTech">BE/BTech</option>
+                    <option value="MCA">MCA</option>
+                    <option value="MSc IT">MSc IT</option>
+                    <option value="MCom">MCom</option>
+                    <option value="MA">MA</option>
+
+                </optgroup>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="selected-class"
+        id="selectedClassLabel"
+    >
+        All Classes
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     STATISTICS
+========================================================= -->
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            👨‍🎓
+        </div>
+
+        <p>
+            Students in Selected Class
+        </p>
+
+        <h2 id="classStudentCount">
+            0
+        </h2>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📚
+        </div>
+
+        <p>
+            Total Courses
+        </p>
+
+        <h2 id="totalCourses">
+            0
+        </h2>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📅
+        </div>
+
+        <p>
+            Total Attendance
+        </p>
+
+        <h2 id="totalAttendance">
+            0
+        </h2>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            💰
+        </div>
+
+        <p>
+            Total Fee Records
+        </p>
+
+        <h2 id="totalFees">
+            0
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     STUDENTS
+========================================================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2 id="studentSectionTitle">
+            👨‍🎓 All Students
+        </h2>
+
+        <button
+            class="btn btn-primary"
+            onclick="openStudentModal()"
+        >
+            + Add Student
+        </button>
+
+    </div>
+
+
+    <input
+        type="text"
+        id="studentSearch"
+        class="search-box"
+        placeholder="Search student..."
+        oninput="searchStudents()"
+    >
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Class / Course</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="studentTable">
+
+                <tr>
+                    <td colspan="6" class="empty">
+                        Loading students...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     COURSES
+========================================================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>
+            📚 Course Management
+        </h2>
+
+        <button
+            class="btn btn-primary"
+            onclick="openCourseModal()"
+        >
+            + Add Course
+        </button>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Course</th>
+                    <th>Code</th>
+                    <th>Duration</th>
+                    <th>Total Fees</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="courseTable">
+
+                <tr>
+                    <td colspan="7" class="empty">
+                        Loading courses...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     LECTURE SCHEDULE
+========================================================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2 id="lectureSectionTitle">
+            🗓️ All Lecture Schedule
+        </h2>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-refresh"
+                onclick="loadLectures()"
+            >
+                🔄 Refresh
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="openLectureModal()"
+            >
+                + Add Lecture
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Class</th>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="lectureTable">
+
+                <tr>
+                    <td colspan="8" class="empty">
+                        Loading lectures...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TEST RESULTS
+========================================================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2 id="testSectionTitle">
+            📝 All Test & Results
+        </h2>
+
+        <button
+            class="btn btn-primary"
+            onclick="openTestModal()"
+        >
+            + Add Test Score
+        </button>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Student</th>
+                    <th>Class</th>
+                    <th>Test</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="testTable">
+
+                <tr>
+                    <td colspan="8" class="empty">
+                        Loading test scores...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     NOTES
+========================================================= -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h2 id="notesSectionTitle">
+            📖 Study Notes
+        </h2>
+
+        <button
+            class="btn btn-primary"
+            onclick="openNoteModal()"
+        >
+            + Add Note
+        </button>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Class</th>
+                    <th>Subject</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="notesTable">
+
+                <tr>
+                    <td colspan="7" class="empty">
+                        Loading notes...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-footer">
+
+    © 2026 MECC — My Education Coaching Classes
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     STUDENT MODAL
+========================================================= -->
+
+<div class="modal" id="studentModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="studentModalTitle">
+Add Student
+</h2>
+
+<button
+class="close"
+onclick="closeModal('studentModal')"
+>
+×
+</button>
+
+</div>
+
+
+<form onsubmit="saveStudent(event)">
+
+<div class="form-group">
+
+<label>
+Full Name
+</label>
+
+<input
+type="text"
+id="fullName"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Email
+</label>
+
+<input
+type="email"
+id="email"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Phone
+</label>
+
+<input
+type="text"
+id="phone"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Class / Course
+</label>
+
+<select
+id="studentCourse"
+required
+>
+
+<option value="">
+Select Class / Course
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Password
+</label>
+
+<input
+type="password"
+id="studentPassword"
+>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Student
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     COURSE MODAL
+========================================================= -->
+
+<div class="modal" id="courseModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="courseModalTitle">
+Add Course
+</h2>
+
+<button
+class="close"
+onclick="closeModal('courseModal')"
+>
+×
+</button>
+
+</div>
+
+
+<form onsubmit="saveCourse(event)">
+
+<div class="form-group">
+
+<label>
+Course Name
+</label>
+
+<input
+type="text"
+id="courseName"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Course Code
+</label>
+
+<input
+type="text"
+id="courseCode"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Duration
+</label>
+
+<input
+type="text"
+id="courseDuration"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Total Fees
+</label>
+
+<input
+type="number"
+id="courseFees"
+min="0"
+value="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Description
+</label>
+
+<textarea
+id="courseDescription"
+rows="4"
+></textarea>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Course
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     ATTENDANCE MODAL
+========================================================= -->
+
+<div class="modal" id="attendanceModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+📅 Attendance Management
+</h2>
+
+<button
+class="close"
+onclick="closeModal('attendanceModal')"
+>
+×
+</button>
+
+</div>
+
+
+<p id="attendanceStudentInfo"></p>
+
+
+<div class="summary">
+
+<div class="summary-box">
+
+<strong id="presentCount">
+0
+</strong>
+
+Present
+
+</div>
+
+<div class="summary-box">
+
+<strong id="absentCount">
+0
+</strong>
+
+Absent
+
+</div>
+
+<div class="summary-box">
+
+<strong id="leaveCount">
+0
+</strong>
+
+Leave
+
+</div>
+
+</div>
+
+
+<form onsubmit="saveAttendance(event)">
+
+<input
+type="hidden"
+id="attendanceStudentId"
+>
+
+
+<div class="form-group">
+
+<label>Date</label>
+
+<input
+type="date"
+id="attendanceDate"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Status</label>
+
+<select
+id="attendanceStatus"
+required
+>
+
+<option value="">
+Select Status
+</option>
+
+<option value="Present">
+Present
+</option>
+
+<option value="Absent">
+Absent
+</option>
+
+<option value="Leave">
+Leave
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Subject</label>
+
+<input
+type="text"
+id="attendanceSubject"
+required
+>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Attendance
+</button>
+
+</form>
+
+
+<br>
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Date</th>
+<th>Subject</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="attendanceTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     FEES MODAL
+========================================================= -->
+
+<div class="modal" id="feesModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+💰 Fees Management
+</h2>
+
+<button
+class="close"
+onclick="closeModal('feesModal')"
+>
+×
+</button>
+
+</div>
+
+
+<p id="feesStudentInfo"></p>
+
+
+<div id="feeSummary"></div>
+
+
+<form onsubmit="saveFees(event)">
+
+<input
+type="hidden"
+id="feesStudentId"
+>
+
+
+<div class="form-group">
+
+<label>Total Fees</label>
+
+<input
+type="number"
+id="totalFeesInput"
+min="0"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Paid Fees</label>
+
+<input
+type="number"
+id="paidFeesInput"
+min="0"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Last Payment Date</label>
+
+<input
+type="date"
+id="lastPaymentDate"
+>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Fees
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     LECTURE MODAL
+========================================================= -->
+
+<div class="modal" id="lectureModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="lectureModalTitle">
+Add Lecture
+</h2>
+
+<button
+class="close"
+onclick="closeModal('lectureModal')"
+>
+×
+</button>
+
+</div>
+
+
+<form onsubmit="saveLecture(event)">
+
+<div class="form-group">
+
+<label>
+Class / Course
+</label>
+
+<select
+id="lectureCourse"
+required
+>
+
+<option value="">
+Select Class / Course
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Subject
+</label>
+
+<input
+type="text"
+id="lectureSubject"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Teacher Name
+</label>
+
+<input
+type="text"
+id="lectureTeacher"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Lecture Date
+</label>
+
+<input
+type="date"
+id="lectureDate"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Start Time
+</label>
+
+<input
+type="time"
+id="lectureStart"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+End Time
+</label>
+
+<input
+type="time"
+id="lectureEnd"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Room
+</label>
+
+<input
+type="text"
+id="lectureRoom"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Description
+</label>
+
+<textarea
+id="lectureDescription"
+rows="3"
+></textarea>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Lecture
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     TEST MODAL
+========================================================= -->
+
+<div class="modal" id="testModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="testModalTitle">
+Add Test Score
+</h2>
+
+<button
+class="close"
+onclick="closeModal('testModal')"
+>
+×
+</button>
+
+</div>
+
+
+<form onsubmit="saveTestScore(event)">
+
+<div class="form-group">
+
+<label>
+Student
+</label>
+
+<select
+id="testStudent"
+required
+>
+
+<option value="">
+Select Student
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Test Name
+</label>
+
+<input
+type="text"
+id="testName"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Subject
+</label>
+
+<input
+type="text"
+id="testSubject"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Total Marks
+</label>
+
+<input
+type="number"
+id="testTotal"
+min="1"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Obtained Marks
+</label>
+
+<input
+type="number"
+id="testObtained"
+min="0"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Exam Date
+</label>
+
+<input
+type="date"
+id="testDate"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Remarks
+</label>
+
+<textarea
+id="testRemarks"
+rows="3"
+></textarea>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Test Score
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     NOTES MODAL
+========================================================= -->
+
+<div class="modal" id="noteModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="noteModalTitle">
+Add Note
+</h2>
+
+<button
+class="close"
+onclick="closeModal('noteModal')"
+>
+×
+</button>
+
+</div>
+
+
+<form onsubmit="saveNote(event)">
+
+<div class="form-group">
+
+<label>
+Class / Course
+</label>
+
+<select
+id="noteCourse"
+required
+>
+
+<option value="">
+Select Class / Course
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Subject
+</label>
+
+<input
+type="text"
+id="noteSubject"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Title
+</label>
+
+<input
+type="text"
+id="noteTitle"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Description
+</label>
+
+<textarea
+id="noteDescription"
+rows="3"
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Note URL
+</label>
+
+<input
+type="url"
+id="noteUrl"
+placeholder="https://..."
+required
+>
+
+</div>
+
+
+<button
+class="submit-btn"
+type="submit"
+>
+Save Note
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   API
+========================================================= */
+
+const API_URL =
+"http://localhost:3000";
+
+
+let students = [];
+
+let courses = [];
+
+let lectures = [];
+
+let testScores = [];
+
+let notes = [];
+
+let selectedAdminClass = "ALL";
+
+let editingStudentId = null;
+
+let editingCourseId = null;
+
+let editingLectureId = null;
+
+let editingTestId = null;
+
+let editingNoteId = null;
+
+
+/* =========================================================
+   LOGIN CHECK
+========================================================= */
+
+const adminData =
+localStorage.getItem("admin");
+
+if(!adminData){
+
+    window.location.href =
+    "admin-login.html";
+
+}
+
+try{
+
+    const admin =
+    JSON.parse(adminData);
+
+    document.getElementById(
+        "adminName"
+    ).textContent =
+    admin.full_name || "Admin";
+
+}
+catch(error){
+
+    localStorage.removeItem("admin");
+
+    window.location.href =
+    "admin-login.html";
+
+}
+
+
+/* =========================================================
+   API HELPER
+========================================================= */
+
+async function apiRequest(
+    endpoint,
+    options={}
+){
+
+    const response =
+    await fetch(
+        API_URL + endpoint,
+        options
+    );
+
+    let data = {};
+
+    try{
+
+        data =
+        await response.json();
+
+    }
+    catch(error){
+
+        data = {};
+
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            data.message ||
+            "Server error"
+        );
+
+    }
+
+    return data;
+
+}
+
+
+/* =========================================================
+   DASHBOARD LOAD
+========================================================= */
+
+async function loadDashboard(){
+
+    await loadStudents();
+
+    await loadCourses();
+
+    await loadLectures();
+
+    await loadTests();
+
+    await loadNotes();
+
+    await loadSummary();
+
+    updateClassInterface();
+
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+async function loadSummary(){
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/admin/dashboard-summary"
+        );
+
+        document.getElementById(
+            "totalCourses"
+        ).textContent =
+        data.courses || 0;
+
+        document.getElementById(
+            "totalAttendance"
+        ).textContent =
+        data.attendance || 0;
+
+        document.getElementById(
+            "totalFees"
+        ).textContent =
+        data.fees || 0;
+
+    }
+    catch(error){
+
+        console.error(
+            "Summary error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLASS OPTIONS
+========================================================= */
+
+function getClassOptions(){
+
+    return [
+
+        "Class 1",
+        "Class 2",
+        "Class 3",
+        "Class 4",
+        "Class 5",
+        "Class 6",
+        "Class 7",
+        "Class 8",
+        "Class 9",
+        "Class 10",
+
+        "Class 11 Science",
+        "Class 11 Commerce",
+        "Class 11 Arts",
+
+        "Class 12 Science",
+        "Class 12 Commerce",
+        "Class 12 Arts",
+
+        "BSc IT",
+        "BSc Computer Science",
+        "BCA",
+        "BCom",
+        "BA",
+        "BBA",
+        "BE/BTech",
+        "MCA",
+        "MSc IT",
+        "MCom",
+        "MA"
+
+    ];
+
+}
+
+
+/* =========================================================
+   DROPDOWNS
+========================================================= */
+
+function fillClassDropdown(
+    elementId,
+    selected=""
+){
+
+    const select =
+    document.getElementById(
+        elementId
+    );
+
+    if(!select){
+        return;
+    }
+
+    select.innerHTML = `
+        <option value="">
+            Select Class / Course
+        </option>
+    `;
+
+    getClassOptions().forEach(
+        item => {
+
+            const option =
+            document.createElement(
+                "option"
+            );
+
+            option.value =
+            item;
+
+            option.textContent =
+            item;
+
+            if(item === selected){
+
+                option.selected =
+                true;
+
+            }
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   STUDENTS
+========================================================= */
+
+async function loadStudents(){
+
+    const table =
+    document.getElementById(
+        "studentTable"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/admin/students"
+        );
+
+        students =
+        data.students || [];
+
+        displayStudents();
+
+    }
+    catch(error){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTERED STUDENTS
+========================================================= */
+
+function getFilteredStudents(){
+
+    if(
+        selectedAdminClass ===
+        "ALL"
+    ){
+
+        return students;
+
+    }
+
+    return students.filter(
+        student =>
+        String(
+            student.course || ""
+        ).trim() ===
+        selectedAdminClass
+    );
+
+}
+
+
+/* =========================================================
+   DISPLAY STUDENTS
+========================================================= */
+
+function displayStudents(){
+
+    const table =
+    document.getElementById(
+        "studentTable"
+    );
+
+    let list =
+    getFilteredStudents();
+
+    const search =
+    document.getElementById(
+        "studentSearch"
+    ).value
+    .trim()
+    .toLowerCase();
+
+    if(search){
+
+        list =
+        list.filter(
+            student =>
+
+            String(
+                student.full_name || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            String(
+                student.email || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            String(
+                student.phone || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            String(
+                student.course || ""
+            )
+            .toLowerCase()
+            .includes(search)
+        );
+
+    }
+
+    if(list.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    No students found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    table.innerHTML =
+    list.map(
+        student => `
+
+        <tr>
+
+            <td>
+                ${student.id}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(
+                        student.full_name
+                    )}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    student.email
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    student.phone || "-"
+                )}
+            </td>
+
+            <td>
+                <span class="class-badge">
+                    ${escapeHTML(
+                        student.course || "-"
+                    )}
+                </span>
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-edit"
+                        onclick="editStudent(${student.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn btn-delete"
+                        onclick="deleteStudent(${student.id})"
+                    >
+                        Delete
+                    </button>
+
+                    <button
+                        class="btn btn-attendance"
+                        onclick="openAttendance(${student.id})"
+                    >
+                        Attendance
+                    </button>
+
+                    <button
+                        class="btn btn-fees"
+                        onclick="openFees(${student.id})"
+                    >
+                        Fees
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchStudents(){
+
+    displayStudents();
+
+}
+
+
+/* =========================================================
+   CHANGE CLASS
+========================================================= */
+
+function changeAdminClass(){
+
+    selectedAdminClass =
+    document.getElementById(
+        "adminClassFilter"
+    ).value;
+
+    updateClassInterface();
+
+}
+
+
+/* =========================================================
+   UPDATE CLASS INTERFACE
+========================================================= */
+
+function updateClassInterface(){
+
+    const label =
+    selectedAdminClass === "ALL"
+    ? "All Classes"
+    : selectedAdminClass;
+
+    document.getElementById(
+        "selectedClassLabel"
+    ).textContent =
+    label;
+
+    document.getElementById(
+        "studentSectionTitle"
+    ).textContent =
+    `👨‍🎓 ${label} Students`;
+
+    document.getElementById(
+        "lectureSectionTitle"
+    ).textContent =
+    `🗓️ ${label} Lecture Schedule`;
+
+    document.getElementById(
+        "testSectionTitle"
+    ).textContent =
+    `📝 ${label} Test & Results`;
+
+    document.getElementById(
+        "notesSectionTitle"
+    ).textContent =
+    `📖 ${label} Study Notes`;
+
+    document.getElementById(
+        "classStudentCount"
+    ).textContent =
+    getFilteredStudents().length;
+
+    displayStudents();
+
+    displayLectures();
+
+    displayTests();
+
+    displayNotes();
+
+    updateTestStudentDropdown();
+
+}
+
+
+/* =========================================================
+   STUDENT MODAL
+========================================================= */
+
+function openStudentModal(
+    id=null
+){
+
+    editingStudentId =
+    id;
+
+    fillClassDropdown(
+        "studentCourse"
+    );
+
+    document.getElementById(
+        "fullName"
+    ).value = "";
+
+    document.getElementById(
+        "email"
+    ).value = "";
+
+    document.getElementById(
+        "phone"
+    ).value = "";
+
+    document.getElementById(
+        "studentPassword"
+    ).value = "";
+
+    document.getElementById(
+        "studentModalTitle"
+    ).textContent =
+    id
+    ? "Edit Student"
+    : "Add Student";
+
+    if(id){
+
+        const student =
+        students.find(
+            s =>
+            String(s.id) ===
+            String(id)
+        );
+
+        if(student){
+
+            document.getElementById(
+                "fullName"
+            ).value =
+            student.full_name || "";
+
+            document.getElementById(
+                "email"
+            ).value =
+            student.email || "";
+
+            document.getElementById(
+                "phone"
+            ).value =
+            student.phone || "";
+
+            document.getElementById(
+                "studentCourse"
+            ).value =
+            student.course || "";
+
+        }
+
+    }
+
+    document.getElementById(
+        "studentModal"
+    ).style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   SAVE STUDENT
+========================================================= */
+
+async function saveStudent(
+    event
+){
+
+    event.preventDefault();
+
+    const body = {
+
+        fullName:
+        document.getElementById(
+            "fullName"
+        ).value.trim(),
+
+        email:
+        document.getElementById(
+            "email"
+        ).value.trim(),
+
+        phone:
+        document.getElementById(
+            "phone"
+        ).value.trim(),
+
+        course:
+        document.getElementById(
+            "studentCourse"
+        ).value,
+
+        password:
+        document.getElementById(
+            "studentPassword"
+        ).value
+
+    };
+
+    try{
+
+        const url =
+        editingStudentId
+        ? `/admin/students/${editingStudentId}`
+        : "/admin/students";
+
+        const method =
+        editingStudentId
+        ? "PUT"
+        : "POST";
+
+        await apiRequest(
+            url,
+            {
+                method,
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            editingStudentId
+            ? "Student updated successfully!"
+            : "Student added successfully!"
+        );
+
+        closeModal(
+            "studentModal"
+        );
+
+        await loadStudents();
+
+        await loadSummary();
+
+        updateClassInterface();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT STUDENT
+========================================================= */
+
+function editStudent(id){
+
+    openStudentModal(id);
+
+}
+
+
+/* =========================================================
+   DELETE STUDENT
+========================================================= */
+
+async function deleteStudent(id){
+
+    const student =
+    students.find(
+        s =>
+        String(s.id) ===
+        String(id)
+    );
+
+    if(
+        !confirm(
+            `Delete ${
+                student
+                ? student.full_name
+                : "this student"
+            }?`
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await apiRequest(
+            `/admin/students/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        alert(
+            "Student deleted successfully!"
+        );
+
+        await loadStudents();
+
+        await loadSummary();
+
+        updateClassInterface();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COURSES
+========================================================= */
+
+async function loadCourses(){
+
+    const table =
+    document.getElementById(
+        "courseTable"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/courses"
+        );
+
+        courses =
+        data.courses || [];
+
+        displayCourses();
+
+        updateCourseDropdowns();
+
+    }
+    catch(error){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY COURSES
+========================================================= */
+
+function displayCourses(){
+
+    const table =
+    document.getElementById(
+        "courseTable"
+    );
+
+    if(courses.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    No courses found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    table.innerHTML =
+    courses.map(
+        course => `
+
+        <tr>
+
+            <td>
+                ${course.id}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(
+                        course.course_name
+                    )}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    course.course_code || "-"
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    course.duration || "-"
+                )}
+            </td>
+
+            <td>
+                ₹${Number(
+                    course.total_fees || 0
+                ).toLocaleString("en-IN")}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    course.description || "-"
+                )}
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-edit"
+                        onclick="editCourse(${course.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn btn-delete"
+                        onclick="deleteCourse(${course.id})"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+/* =========================================================
+   COURSE MODAL
+========================================================= */
+
+function openCourseModal(
+    id=null
+){
+
+    editingCourseId =
+    id;
+
+    document.getElementById(
+        "courseName"
+    ).value = "";
+
+    document.getElementById(
+        "courseCode"
+    ).value = "";
+
+    document.getElementById(
+        "courseDuration"
+    ).value = "";
+
+    document.getElementById(
+        "courseFees"
+    ).value = 0;
+
+    document.getElementById(
+        "courseDescription"
+    ).value = "";
+
+    document.getElementById(
+        "courseModalTitle"
+    ).textContent =
+    id
+    ? "Edit Course"
+    : "Add Course";
+
+    if(id){
+
+        const course =
+        courses.find(
+            c =>
+            String(c.id) ===
+            String(id)
+        );
+
+        if(course){
+
+            document.getElementById(
+                "courseName"
+            ).value =
+            course.course_name || "";
+
+            document.getElementById(
+                "courseCode"
+            ).value =
+            course.course_code || "";
+
+            document.getElementById(
+                "courseDuration"
+            ).value =
+            course.duration || "";
+
+            document.getElementById(
+                "courseFees"
+            ).value =
+            course.total_fees || 0;
+
+            document.getElementById(
+                "courseDescription"
+            ).value =
+            course.description || "";
+
+        }
+
+    }
+
+    document.getElementById(
+        "courseModal"
+    ).style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   SAVE COURSE
+========================================================= */
+
+async function saveCourse(
+    event
+){
+
+    event.preventDefault();
+
+    const body = {
+
+        courseName:
+        document.getElementById(
+            "courseName"
+        ).value.trim(),
+
+        courseCode:
+        document.getElementById(
+            "courseCode"
+        ).value.trim(),
+
+        duration:
+        document.getElementById(
+            "courseDuration"
+        ).value.trim(),
+
+        totalFees:
+        Number(
+            document.getElementById(
+                "courseFees"
+            ).value || 0
+        ),
+
+        description:
+        document.getElementById(
+            "courseDescription"
+        ).value.trim()
+
+    };
+
+    try{
+
+        const url =
+        editingCourseId
+        ? `/courses/${editingCourseId}`
+        : "/courses";
+
+        const method =
+        editingCourseId
+        ? "PUT"
+        : "POST";
+
+        await apiRequest(
+            url,
+            {
+                method,
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            editingCourseId
+            ? "Course updated successfully!"
+            : "Course added successfully!"
+        );
+
+        closeModal(
+            "courseModal"
+        );
+
+        await loadCourses();
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT COURSE
+========================================================= */
+
+function editCourse(id){
+
+    openCourseModal(id);
+
+}
+
+
+/* =========================================================
+   DELETE COURSE
+========================================================= */
+
+async function deleteCourse(id){
+
+    const course =
+    courses.find(
+        c =>
+        String(c.id) ===
+        String(id)
+    );
+
+    if(
+        !confirm(
+            `Delete ${
+                course
+                ? course.course_name
+                : "this course"
+            }?`
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await apiRequest(
+            `/courses/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        alert(
+            "Course deleted successfully!"
+        );
+
+        await loadCourses();
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE COURSE DROPDOWNS
+========================================================= */
+
+function updateCourseDropdowns(){
+
+    const dropdowns = [
+
+        "lectureCourse",
+        "noteCourse"
+
+    ];
+
+    dropdowns.forEach(
+        id => {
+
+            const select =
+            document.getElementById(id);
+
+            if(!select){
+                return;
+            }
+
+            select.innerHTML = `
+                <option value="">
+                    Select Class / Course
+                </option>
+            `;
+
+            getClassOptions().forEach(
+                item => {
+
+                    const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                    option.value =
+                    item;
+
+                    option.textContent =
+                    item;
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+async function openAttendance(
+    studentId
+){
+
+    const student =
+    students.find(
+        s =>
+        String(s.id) ===
+        String(studentId)
+    );
+
+    if(!student){
+
+        alert(
+            "Student information not found."
+        );
+
+        return;
+
+    }
+
+    document.getElementById(
+        "attendanceStudentId"
+    ).value =
+    student.id;
+
+    document.getElementById(
+        "attendanceStudentInfo"
+    ).innerHTML = `
+
+        <strong>Student:</strong>
+        ${escapeHTML(
+            student.full_name
+        )}
+
+        &nbsp;&nbsp;
+
+        <strong>Class:</strong>
+        ${escapeHTML(
+            student.course || "-"
+        )}
+
+    `;
+
+    const today =
+    new Date();
+
+    document.getElementById(
+        "attendanceDate"
+    ).value =
+    formatDate(today);
+
+    document.getElementById(
+        "attendanceStatus"
+    ).value = "";
+
+    document.getElementById(
+        "attendanceSubject"
+    ).value = "";
+
+    document.getElementById(
+        "attendanceModal"
+    ).style.display =
+    "flex";
+
+    await loadAttendance(
+        student.id
+    );
+
+}
+
+
+/* =========================================================
+   LOAD ATTENDANCE
+========================================================= */
+
+async function loadAttendance(
+    studentId
+){
+
+    const table =
+    document.getElementById(
+        "attendanceTable"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            `/attendance/${studentId}`
+        );
+
+        const records =
+        data.attendance || [];
+
+        let present = 0;
+        let absent = 0;
+        let leave = 0;
+
+        records.forEach(
+            record => {
+
+                if(record.status === "Present")
+                    present++;
+
+                if(record.status === "Absent")
+                    absent++;
+
+                if(record.status === "Leave")
+                    leave++;
+
+            }
+        );
+
+        document.getElementById(
+            "presentCount"
+        ).textContent =
+        present;
+
+        document.getElementById(
+            "absentCount"
+        ).textContent =
+        absent;
+
+        document.getElementById(
+            "leaveCount"
+        ).textContent =
+        leave;
+
+        if(records.length === 0){
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="3" class="empty">
+                        No attendance records.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+        table.innerHTML =
+        records.map(
+            record => `
+
+            <tr>
+
+                <td>
+                    ${String(
+                        record.attendance_date
+                    ).slice(0,10)}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        record.subject || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        record.status || "-"
+                    )}
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+    }
+    catch(error){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="3" class="empty">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE ATTENDANCE
+========================================================= */
+
+async function saveAttendance(
+    event
+){
+
+    event.preventDefault();
+
+    const body = {
+
+        studentId:
+        Number(
+            document.getElementById(
+                "attendanceStudentId"
+            ).value
+        ),
+
+        attendanceDate:
+        document.getElementById(
+            "attendanceDate"
+        ).value,
+
+        status:
+        document.getElementById(
+            "attendanceStatus"
+        ).value,
+
+        subject:
+        document.getElementById(
+            "attendanceSubject"
+        ).value.trim()
+
+    };
+
+    try{
+
+        await apiRequest(
+            "/attendance",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            "Attendance saved successfully!"
+        );
+
+        await loadAttendance(
+            body.studentId
+        );
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FEES
+========================================================= */
+
+async function openFees(
+    studentId
+){
+
+    const student =
+    students.find(
+        s =>
+        String(s.id) ===
+        String(studentId)
+    );
+
+    if(!student){
+
+        alert(
+            "Student information not found."
+        );
+
+        return;
+
+    }
+
+    document.getElementById(
+        "feesStudentId"
+    ).value =
+    student.id;
+
+    document.getElementById(
+        "feesStudentInfo"
+    ).innerHTML = `
+
+        <strong>Student:</strong>
+        ${escapeHTML(
+            student.full_name
+        )}
+
+        &nbsp;&nbsp;
+
+        <strong>Class:</strong>
+        ${escapeHTML(
+            student.course || "-"
+        )}
+
+    `;
+
+    document.getElementById(
+        "totalFeesInput"
+    ).value = "";
+
+    document.getElementById(
+        "paidFeesInput"
+    ).value = "";
+
+    document.getElementById(
+        "lastPaymentDate"
+    ).value = "";
+
+    document.getElementById(
+        "feesModal"
+    ).style.display =
+    "flex";
+
+    await loadFees(
+        student.id
+    );
+
+}
+
+
+/* =========================================================
+   LOAD FEES
+========================================================= */
+
+async function loadFees(
+    studentId
+){
+
+    const box =
+    document.getElementById(
+        "feeSummary"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            `/fees/${studentId}`
+        );
+
+        const fee =
+        data.fee ||
+        data.fees ||
+        data.record;
+
+        if(!fee){
+
+            box.innerHTML = `
+                <div class="empty">
+                    No fee record found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+        const total =
+        Number(
+            fee.total_fees || 0
+        );
+
+        const paid =
+        Number(
+            fee.paid_fees || 0
+        );
+
+        const pending =
+        Number(
+            fee.pending_fees ??
+            (total-paid)
+        );
+
+        box.innerHTML = `
+
+            <div class="fee-summary">
+
+                <div class="fee-box">
+                    Total
+                    <strong>
+                        ₹${total.toLocaleString("en-IN")}
+                    </strong>
+                </div>
+
+                <div class="fee-box">
+                    Paid
+                    <strong>
+                        ₹${paid.toLocaleString("en-IN")}
+                    </strong>
+                </div>
+
+                <div class="fee-box">
+                    Pending
+                    <strong>
+                        ₹${pending.toLocaleString("en-IN")}
+                    </strong>
+                </div>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "totalFeesInput"
+        ).value =
+        total;
+
+        document.getElementById(
+            "paidFeesInput"
+        ).value =
+        paid;
+
+        document.getElementById(
+            "lastPaymentDate"
+        ).value =
+        fee.last_payment_date
+        ? String(
+            fee.last_payment_date
+        ).slice(0,10)
+        : "";
+
+    }
+    catch(error){
+
+        box.innerHTML = `
+            <div class="empty">
+                ${escapeHTML(
+                    error.message
+                )}
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE FEES
+========================================================= */
+
+async function saveFees(
+    event
+){
+
+    event.preventDefault();
+
+    const studentId =
+    Number(
+        document.getElementById(
+            "feesStudentId"
+        ).value
+    );
+
+    const total =
+    Number(
+        document.getElementById(
+            "totalFeesInput"
+        ).value || 0
+    );
+
+    const paid =
+    Number(
+        document.getElementById(
+            "paidFeesInput"
+        ).value || 0
+    );
+
+    if(paid > total){
+
+        alert(
+            "Paid fees cannot be greater than total fees."
+        );
+
+        return;
+
+    }
+
+    const pending =
+    total - paid;
+
+    const body = {
+
+        studentId,
+
+        totalFees:
+        total,
+
+        paidFees:
+        paid,
+
+        pendingFees:
+        pending,
+
+        lastPaymentDate:
+        document.getElementById(
+            "lastPaymentDate"
+        ).value || null
+
+    };
+
+    try{
+
+        await apiRequest(
+            "/fees",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            "Fees saved successfully!"
+        );
+
+        await loadFees(
+            studentId
+        );
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LECTURE SCHEDULE
+   IMPORTANT CORRECTION
+========================================================= */
+
+async function loadLectures(){
+
+    const table =
+    document.getElementById(
+        "lectureTable"
+    );
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="8" class="empty">
+                Loading lectures...
+            </td>
+        </tr>
+    `;
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/admin/schedule"
+        );
+
+        /*
+            Backend response:
+            {
+                success:true,
+                schedules:[...]
+            }
+
+            Extra fallbacks are included so that
+            frontend remains safe if response naming changes.
+        */
+
+        lectures =
+        data.schedules ||
+        data.lectures ||
+        data.schedule ||
+        [];
+
+        if(!Array.isArray(lectures)){
+
+            lectures = [];
+
+        }
+
+        console.log(
+            "Loaded lectures:",
+            lectures
+        );
+
+        displayLectures();
+
+    }
+    catch(error){
+
+        console.error(
+            "Lecture loading error:",
+            error
+        );
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+
+                    Unable to load lectures.<br><br>
+
+                    ${escapeHTML(
+                        error.message
+                    )}
+
+                    <br><br>
+
+                    <button
+                        class="btn btn-refresh"
+                        onclick="loadLectures()"
+                    >
+                        🔄 Try Again
+                    </button>
+
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   NORMALIZE CLASS
+========================================================= */
+
+function normalizeClass(
+    value
+){
+
+    return String(
+        value || ""
+    )
+    .trim()
+    .replace(/\s+/g," ")
+    .toLowerCase();
+
+}
+
+
+/* =========================================================
+   DISPLAY LECTURES
+   IMPORTANT CORRECTION
+========================================================= */
+
+function displayLectures(){
+
+    const table =
+    document.getElementById(
+        "lectureTable"
+    );
+
+    let list =
+    Array.isArray(lectures)
+    ? lectures
+    : [];
+
+    /*
+        Class filtering is done only when
+        a particular class is selected.
+    */
+
+    if(
+        selectedAdminClass !==
+        "ALL"
+    ){
+
+        const selected =
+        normalizeClass(
+            selectedAdminClass
+        );
+
+        list =
+        list.filter(
+            lecture =>
+
+            normalizeClass(
+                lecture.course
+            ) === selected
+        );
+
+    }
+
+    /*
+        IMPORTANT:
+        If All Classes is selected,
+        ALL lectures from database are shown.
+    */
+
+    if(list.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="empty"
+                >
+
+                    No lectures found for
+
+                    <strong>
+                        ${
+                            selectedAdminClass ===
+                            "ALL"
+                            ? "All Classes"
+                            : escapeHTML(
+                                selectedAdminClass
+                            )
+                        }
+                    </strong>
+
+                    <br><br>
+
+                    ${
+                        selectedAdminClass ===
+                        "ALL"
+                        ? `
+                            Add a lecture using
+                            <b>+ Add Lecture</b>.
+                          `
+                        : `
+                            Try selecting
+                            <b>All Classes</b>
+                            to see all saved lectures.
+                          `
+                    }
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    table.innerHTML =
+    list.map(
+        lecture => {
+
+            const date =
+            lecture.lecture_date
+            ? String(
+                lecture.lecture_date
+            ).slice(0,10)
+            : "-";
+
+            const start =
+            lecture.start_time
+            ? String(
+                lecture.start_time
+            ).slice(0,5)
+            : "";
+
+            const end =
+            lecture.end_time
+            ? String(
+                lecture.end_time
+            ).slice(0,5)
+            : "";
+
+            return `
+
+            <tr>
+
+                <td>
+                    ${lecture.id}
+                </td>
+
+                <td>
+
+                    <span class="class-badge">
+
+                        ${escapeHTML(
+                            lecture.course || "-"
+                        )}
+
+                    </span>
+
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        lecture.subject || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        lecture.teacher_name || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(date)}
+                </td>
+
+                <td>
+
+                    ${escapeHTML(start)}
+
+                    -
+
+                    ${escapeHTML(end)}
+
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        lecture.room || "-"
+                    )}
+                </td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-edit"
+                            onclick="editLecture(${lecture.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn btn-delete"
+                            onclick="deleteLecture(${lecture.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   LECTURE MODAL
+========================================================= */
+
+async function openLectureModal(
+    id=null
+){
+
+    editingLectureId =
+    id;
+
+    updateCourseDropdowns();
+
+    document.getElementById(
+        "lectureCourse"
+    ).value = "";
+
+    document.getElementById(
+        "lectureSubject"
+    ).value = "";
+
+    document.getElementById(
+        "lectureTeacher"
+    ).value = "";
+
+    document.getElementById(
+        "lectureDate"
+    ).value = "";
+
+    document.getElementById(
+        "lectureStart"
+    ).value = "";
+
+    document.getElementById(
+        "lectureEnd"
+    ).value = "";
+
+    document.getElementById(
+        "lectureRoom"
+    ).value = "";
+
+    document.getElementById(
+        "lectureDescription"
+    ).value = "";
+
+    document.getElementById(
+        "lectureModalTitle"
+    ).textContent =
+    id
+    ? "Edit Lecture"
+    : "Add Lecture";
+
+
+    /*
+        If a class is selected,
+        automatically select that class
+        while adding lecture.
+    */
+
+    if(
+        !id &&
+        selectedAdminClass !==
+        "ALL"
+    ){
+
+        document.getElementById(
+            "lectureCourse"
+        ).value =
+        selectedAdminClass;
+
+    }
+
+
+    if(id){
+
+        try{
+
+            const data =
+            await apiRequest(
+                `/admin/schedule/${id}`
+            );
+
+            const lecture =
+            data.schedule;
+
+            if(!lecture){
+
+                throw new Error(
+                    "Lecture record not found."
+                );
+
+            }
+
+            document.getElementById(
+                "lectureCourse"
+            ).value =
+            lecture.course || "";
+
+            document.getElementById(
+                "lectureSubject"
+            ).value =
+            lecture.subject || "";
+
+            document.getElementById(
+                "lectureTeacher"
+            ).value =
+            lecture.teacher_name || "";
+
+            document.getElementById(
+                "lectureDate"
+            ).value =
+            lecture.lecture_date
+            ? String(
+                lecture.lecture_date
+            ).slice(0,10)
+            : "";
+
+            document.getElementById(
+                "lectureStart"
+            ).value =
+            lecture.start_time
+            ? String(
+                lecture.start_time
+            ).slice(0,5)
+            : "";
+
+            document.getElementById(
+                "lectureEnd"
+            ).value =
+            lecture.end_time
+            ? String(
+                lecture.end_time
+            ).slice(0,5)
+            : "";
+
+            document.getElementById(
+                "lectureRoom"
+            ).value =
+            lecture.room || "";
+
+            document.getElementById(
+                "lectureDescription"
+            ).value =
+            lecture.description || "";
+
+        }
+        catch(error){
+
+            alert(
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+    document.getElementById(
+        "lectureModal"
+    ).style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   SAVE LECTURE
+   IMPORTANT CORRECTION
+========================================================= */
+
+async function saveLecture(
+    event
+){
+
+    event.preventDefault();
+
+    const body = {
+
+        course:
+        document.getElementById(
+            "lectureCourse"
+        ).value.trim(),
+
+        subject:
+        document.getElementById(
+            "lectureSubject"
+        ).value.trim(),
+
+        teacherName:
+        document.getElementById(
+            "lectureTeacher"
+        ).value.trim(),
+
+        lectureDate:
+        document.getElementById(
+            "lectureDate"
+        ).value,
+
+        startTime:
+        document.getElementById(
+            "lectureStart"
+        ).value,
+
+        endTime:
+        document.getElementById(
+            "lectureEnd"
+        ).value,
+
+        room:
+        document.getElementById(
+            "lectureRoom"
+        ).value.trim(),
+
+        description:
+        document.getElementById(
+            "lectureDescription"
+        ).value.trim()
+
+    };
+
+
+    if(!body.course){
+
+        alert(
+            "Please select a class/course."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const url =
+        editingLectureId
+        ? `/admin/schedule/${editingLectureId}`
+        : "/admin/schedule";
+
+        const method =
+        editingLectureId
+        ? "PUT"
+        : "POST";
+
+
+        const result =
+        await apiRequest(
+            url,
+            {
+                method,
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+
+        console.log(
+            "Lecture save response:",
+            result
+        );
+
+
+        alert(
+            editingLectureId
+            ? "Lecture updated successfully!"
+            : "Lecture added successfully!"
+        );
+
+
+        closeModal(
+            "lectureModal"
+        );
+
+
+        /*
+            CRITICAL FIX:
+
+            1. Reload data from MySQL.
+            2. If a particular class was selected,
+               move the filter to the newly saved lecture's class.
+            3. Display immediately.
+        */
+
+        if(
+            selectedAdminClass !== "ALL" &&
+            normalizeClass(
+                selectedAdminClass
+            ) !==
+            normalizeClass(
+                body.course
+            )
+        ){
+
+            selectedAdminClass =
+            body.course;
+
+            document.getElementById(
+                "adminClassFilter"
+            ).value =
+            body.course;
+
+        }
+
+
+        await loadLectures();
+
+        updateClassInterface();
+
+    }
+    catch(error){
+
+        console.error(
+            "Save lecture error:",
+            error
+        );
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT LECTURE
+========================================================= */
+
+function editLecture(id){
+
+    openLectureModal(id);
+
+}
+
+
+/* =========================================================
+   DELETE LECTURE
+========================================================= */
+
+async function deleteLecture(
+    id
+){
+
+    if(
+        !confirm(
+            "Delete this lecture?"
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await apiRequest(
+            `/admin/schedule/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        alert(
+            "Lecture deleted successfully!"
+        );
+
+        await loadLectures();
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TEST SCORES
+========================================================= */
+
+async function loadTests(){
+
+    const table =
+    document.getElementById(
+        "testTable"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/admin/test-scores"
+        );
+
+        testScores =
+        data.testScores ||
+        data.scores ||
+        [];
+
+        displayTests();
+
+    }
+    catch(error){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY TESTS
+========================================================= */
+
+function displayTests(){
+
+    const table =
+    document.getElementById(
+        "testTable"
+    );
+
+    let list =
+    testScores;
+
+    if(
+        selectedAdminClass !==
+        "ALL"
+    ){
+
+        list =
+        list.filter(
+            score =>
+            normalizeClass(
+                score.course
+            ) ===
+            normalizeClass(
+                selectedAdminClass
+            )
+        );
+
+    }
+
+    if(list.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No test results found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    table.innerHTML =
+    list.map(
+        score => `
+
+        <tr>
+
+            <td>
+                ${score.id}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    score.full_name || "-"
+                )}
+            </td>
+
+            <td>
+                <span class="class-badge">
+                    ${escapeHTML(
+                        score.course || "-"
+                    )}
+                </span>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    score.test_name || "-"
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    score.subject || "-"
+                )}
+            </td>
+
+            <td>
+                <strong>
+                    ${score.obtained_marks}
+                    /
+                    ${score.total_marks}
+                </strong>
+            </td>
+
+            <td>
+                ${String(
+                    score.exam_date || "-"
+                ).slice(0,10)}
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-edit"
+                        onclick="editTest(${score.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn btn-delete"
+                        onclick="deleteTest(${score.id})"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+/* =========================================================
+   TEST STUDENT DROPDOWN
+========================================================= */
+
+function updateTestStudentDropdown(){
+
+    const select =
+    document.getElementById(
+        "testStudent"
+    );
+
+    if(!select){
+        return;
+    }
+
+    select.innerHTML = `
+        <option value="">
+            Select Student
+        </option>
+    `;
+
+    getFilteredStudents().forEach(
+        student => {
+
+            const option =
+            document.createElement(
+                "option"
+            );
+
+            option.value =
+            student.id;
+
+            option.textContent =
+            `${student.full_name} — ${
+                student.course || "-"
+            }`;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TEST MODAL
+========================================================= */
+
+async function openTestModal(
+    id=null
+){
+
+    editingTestId =
+    id;
+
+    updateTestStudentDropdown();
+
+    document.getElementById(
+        "testStudent"
+    ).value = "";
+
+    document.getElementById(
+        "testName"
+    ).value = "";
+
+    document.getElementById(
+        "testSubject"
+    ).value = "";
+
+    document.getElementById(
+        "testTotal"
+    ).value = "";
+
+    document.getElementById(
+        "testObtained"
+    ).value = "";
+
+    document.getElementById(
+        "testDate"
+    ).value = "";
+
+    document.getElementById(
+        "testRemarks"
+    ).value = "";
+
+    document.getElementById(
+        "testModalTitle"
+    ).textContent =
+    id
+    ? "Edit Test Score"
+    : "Add Test Score";
+
+
+    if(id){
+
+        try{
+
+            const data =
+            await apiRequest(
+                `/admin/test-scores/${id}`
+            );
+
+            const score =
+            data.testScore;
+
+            document.getElementById(
+                "testStudent"
+            ).value =
+            score.student_id;
+
+            document.getElementById(
+                "testName"
+            ).value =
+            score.test_name || "";
+
+            document.getElementById(
+                "testSubject"
+            ).value =
+            score.subject || "";
+
+            document.getElementById(
+                "testTotal"
+            ).value =
+            score.total_marks;
+
+            document.getElementById(
+                "testObtained"
+            ).value =
+            score.obtained_marks;
+
+            document.getElementById(
+                "testDate"
+            ).value =
+            String(
+                score.exam_date
+            ).slice(0,10);
+
+            document.getElementById(
+                "testRemarks"
+            ).value =
+            score.remarks || "";
+
+        }
+        catch(error){
+
+            alert(
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+    document.getElementById(
+        "testModal"
+    ).style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   SAVE TEST
+========================================================= */
+
+async function saveTestScore(
+    event
+){
+
+    event.preventDefault();
+
+    const total =
+    Number(
+        document.getElementById(
+            "testTotal"
+        ).value
+    );
+
+    const obtained =
+    Number(
+        document.getElementById(
+            "testObtained"
+        ).value
+    );
+
+    if(obtained > total){
+
+        alert(
+            "Obtained marks cannot be greater than total marks."
+        );
+
+        return;
+
+    }
+
+    const studentId =
+    Number(
+        document.getElementById(
+            "testStudent"
+        ).value
+    );
+
+    if(!studentId){
+
+        alert(
+            "Please select a student."
+        );
+
+        return;
+
+    }
+
+    const body = {
+
+        studentId,
+
+        testName:
+        document.getElementById(
+            "testName"
+        ).value.trim(),
+
+        subject:
+        document.getElementById(
+            "testSubject"
+        ).value.trim(),
+
+        totalMarks:
+        total,
+
+        obtainedMarks:
+        obtained,
+
+        examDate:
+        document.getElementById(
+            "testDate"
+        ).value,
+
+        remarks:
+        document.getElementById(
+            "testRemarks"
+        ).value.trim()
+
+    };
+
+    try{
+
+        const url =
+        editingTestId
+        ? `/admin/test-scores/${editingTestId}`
+        : "/admin/test-scores";
+
+        const method =
+        editingTestId
+        ? "PUT"
+        : "POST";
+
+        await apiRequest(
+            url,
+            {
+                method,
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            editingTestId
+            ? "Test score updated successfully!"
+            : "Test score added successfully!"
+        );
+
+        closeModal(
+            "testModal"
+        );
+
+        await loadTests();
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT TEST
+========================================================= */
+
+function editTest(id){
+
+    openTestModal(id);
+
+}
+
+
+/* =========================================================
+   DELETE TEST
+========================================================= */
+
+async function deleteTest(id){
+
+    if(
+        !confirm(
+            "Delete this test score?"
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await apiRequest(
+            `/admin/test-scores/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        alert(
+            "Test score deleted successfully!"
+        );
+
+        await loadTests();
+
+        await loadSummary();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+async function loadNotes(){
+
+    const table =
+    document.getElementById(
+        "notesTable"
+    );
+
+    try{
+
+        const data =
+        await apiRequest(
+            "/admin/notes"
+        );
+
+        notes =
+        data.notes || [];
+
+        displayNotes();
+
+    }
+    catch(error){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY NOTES
+========================================================= */
+
+function displayNotes(){
+
+    const table =
+    document.getElementById(
+        "notesTable"
+    );
+
+    let list =
+    notes;
+
+    if(
+        selectedAdminClass !==
+        "ALL"
+    ){
+
+        list =
+        list.filter(
+            note =>
+            normalizeClass(
+                note.course
+            ) ===
+            normalizeClass(
+                selectedAdminClass
+            )
+        );
+
+    }
+
+    if(list.length === 0){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    No notes found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+    table.innerHTML =
+    list.map(
+        note => `
+
+        <tr>
+
+            <td>
+                ${note.id}
+            </td>
+
+            <td>
+                <span class="class-badge">
+                    ${escapeHTML(
+                        note.course || "-"
+                    )}
+                </span>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    note.subject || "-"
+                )}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(
+                        note.title || "-"
+                    )}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    note.description || "-"
+                )}
+            </td>
+
+            <td>
+
+                ${
+                    note.note_url
+                    ?
+                    `
+                    <a
+                        href="${escapeHTML(
+                            note.note_url
+                        )}"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Open Note
+                    </a>
+                    `
+                    :
+                    "-"
+                }
+
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-edit"
+                        onclick="editNote(${note.id})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn btn-delete"
+                        onclick="deleteNote(${note.id})"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+/* =========================================================
+   NOTE MODAL
+========================================================= */
+
+function openNoteModal(
+    id=null
+){
+
+    editingNoteId =
+    id;
+
+    updateCourseDropdowns();
+
+    document.getElementById(
+        "noteCourse"
+    ).value = "";
+
+    document.getElementById(
+        "noteSubject"
+    ).value = "";
+
+    document.getElementById(
+        "noteTitle"
+    ).value = "";
+
+    document.getElementById(
+        "noteDescription"
+    ).value = "";
+
+    document.getElementById(
+        "noteUrl"
+    ).value = "";
+
+    document.getElementById(
+        "noteModalTitle"
+    ).textContent =
+    id
+    ? "Edit Note"
+    : "Add Note";
+
+
+    if(
+        !id &&
+        selectedAdminClass !==
+        "ALL"
+    ){
+
+        document.getElementById(
+            "noteCourse"
+        ).value =
+        selectedAdminClass;
+
+    }
+
+
+    if(id){
+
+        const note =
+        notes.find(
+            n =>
+            String(n.id) ===
+            String(id)
+        );
+
+        if(note){
+
+            document.getElementById(
+                "noteCourse"
+            ).value =
+            note.course || "";
+
+            document.getElementById(
+                "noteSubject"
+            ).value =
+            note.subject || "";
+
+            document.getElementById(
+                "noteTitle"
+            ).value =
+            note.title || "";
+
+            document.getElementById(
+                "noteDescription"
+            ).value =
+            note.description || "";
+
+            document.getElementById(
+                "noteUrl"
+            ).value =
+            note.note_url || "";
+
+        }
+
+    }
+
+    document.getElementById(
+        "noteModal"
+    ).style.display =
+    "flex";
+
+}
+
+
+/* =========================================================
+   SAVE NOTE
+========================================================= */
+
+async function saveNote(
+    event
+){
+
+    event.preventDefault();
+
+    const body = {
+
+        course:
+        document.getElementById(
+            "noteCourse"
+        ).value,
+
+        subject:
+        document.getElementById(
+            "noteSubject"
+        ).value.trim(),
+
+        title:
+        document.getElementById(
+            "noteTitle"
+        ).value.trim(),
+
+        description:
+        document.getElementById(
+            "noteDescription"
+        ).value.trim(),
+
+        noteUrl:
+        document.getElementById(
+            "noteUrl"
+        ).value.trim()
+
+    };
+
+    try{
+
+        const url =
+        editingNoteId
+        ? `/admin/notes/${editingNoteId}`
+        : "/admin/notes";
+
+        const method =
+        editingNoteId
+        ? "PUT"
+        : "POST";
+
+        await apiRequest(
+            url,
+            {
+                method,
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:
+                JSON.stringify(body)
+            }
+        );
+
+        alert(
+            editingNoteId
+            ? "Note updated successfully!"
+            : "Note added successfully!"
+        );
+
+        closeModal(
+            "noteModal"
+        );
+
+        await loadNotes();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT NOTE
+========================================================= */
+
+function editNote(id){
+
+    openNoteModal(id);
+
+}
+
+
+/* =========================================================
+   DELETE NOTE
+========================================================= */
+
+async function deleteNote(id){
+
+    if(
+        !confirm(
+            "Delete this note?"
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await apiRequest(
+            `/admin/notes/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        alert(
+            "Note deleted successfully!"
+        );
+
+        await loadNotes();
+
+    }
+    catch(error){
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(
+    date
+){
+
+    return `${date.getFullYear()}-${
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0")
+    }-${
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+    }`;
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal(
+    modalId
+){
+
+    const modal =
+    document.getElementById(
+        modalId
+    );
+
+    if(modal){
+
+        modal.style.display =
+        "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+    localStorage.removeItem(
+        "admin"
+    );
+
+    window.location.href =
+    "admin-login.html";
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   CLICK OUTSIDE MODAL
+========================================================= */
+
+window.addEventListener(
+    "click",
+    function(event){
+
+        const ids = [
+
+            "studentModal",
+            "courseModal",
+            "attendanceModal",
+            "feesModal",
+            "lectureModal",
+            "testModal",
+            "noteModal"
+
+        ];
+
+        ids.forEach(
+            id => {
+
+                const modal =
+                document.getElementById(id);
+
+                if(
+                    event.target ===
+                    modal
+                ){
+
+                    closeModal(id);
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+window.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key !==
+            "Escape"
+        ){
+
+            return;
+
+        }
+
+        const ids = [
+
+            "studentModal",
+            "courseModal",
+            "attendanceModal",
+            "feesModal",
+            "lectureModal",
+            "testModal",
+            "noteModal"
+
+        ];
+
+        ids.forEach(
+            id => {
+
+                const modal =
+                document.getElementById(id);
+
+                if(
+                    modal &&
+                    modal.style.display ===
+                    "flex"
+                ){
+
+                    closeModal(id);
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+fillClassDropdown(
+    "studentCourse"
+);
+
+updateCourseDropdowns();
+
+loadDashboard();
+
+</script>
+
+</body>
+
+</html>
